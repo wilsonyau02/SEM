@@ -6,6 +6,7 @@
     - react-router-dom
     - antd
     - @supabase/supabase-js
+      for example, 'npm install react react-dom react-router-dom antd......"
 
 
 ### To run the code
