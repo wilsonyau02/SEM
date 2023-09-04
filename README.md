@@ -19,3 +19,8 @@
 
 ### When create the table in supabase, remember:
 1. Disable Row Level Security (RLS) //If not cannot retrieve data from supabase.
+
+
+## To use ant design, can refer to the documentation:
+- https://ant.design/components/overview
+
