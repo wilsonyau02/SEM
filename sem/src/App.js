@@ -1,27 +1,28 @@
+import Registration from "./pages/application/application";
 import { supabase } from "./supabase-client";
-import { useState, useEffect } from 'react';
-
+import { useState, useEffect } from "react";
 
 function App() {
+  const [value, setValue] = useState({});
 
-    const [value, setValue] = useState({});
+  useEffect(() => {
+    async function getData() {
+      const { data, error } = await supabase.from("Testing").select("*");
 
-    useEffect(() => {
+      console.log(data, error);
+      setValue(data);
+    }
 
-        async function getData() {
-            const { data, error } = await supabase
-                .from('Testing')
-                .select('*')
+    getData();
+  }, []);
 
-            console.log(data, error);
-            setValue(data);
-        }
+  return (
+    <>
+      <h1>Hello World</h1>
 
-
-        getData();
-    }, []);
-
-    return <h1>Hello World</h1>;
+      <Registration/>
+    </>
+  );
 }
 
 export default App;
