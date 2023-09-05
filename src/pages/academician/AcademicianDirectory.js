@@ -1,8 +1,32 @@
+import { Divider } from 'antd';
+import React from 'react';
+import StaffColumnGrid from './StaffColumn';
+import DropdownStaff from './Dropdown';
+import SearchbarStaff  from './Searchbar';
+
 function AcademicianDirectory(){
     return (
-        <div>
-            Academician Directory
-        </div>
+        <>
+            <p>
+                Our Staff Directory
+            </p>
+            <p>
+                With over years of teaching experience, we've got a well-seasoned team at the helm here at TARUMT.
+            </p>
+            <Divider />
+            <div className = "staffColumns">
+
+                {/* <div>
+                    number of staff shown
+                    Staff Shown
+                </div> */}
+
+                <br></br>
+                <StaffColumnGrid/>
+
+            </div>
+        </>
+        
     )
 }
 
