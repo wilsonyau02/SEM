@@ -56,14 +56,18 @@ export async function searchAcademiciansByBranch(value) {
 }
 
 // Function to display staffs from Supabase (academician)
-export async function fetchSupabaseData(table) {
+export async function  fetchSupabaseData(table, selectedField, searchValue) {
   try {
-    const { data, error } = await supabase
-      .from(table)
-      .select('*'); // Select all fields
+    let query = supabase.from(table).select('*'); // Select all fields
+
+    if (selectedField) {
+      query = query.eq(selectedField, searchValue); // Apply a filter based on selectedField and searchValue
+    }
+
+    const { data, error } = await query;
 
     if (error) {
-      console.error('Error fetching data:', error.message);
+      console.error('Error fetching filtered data:', error.message);
       return [];
     } else {
       return data;
