@@ -24,45 +24,52 @@ const StaffColumnGrid = () => {
     fetchData();
   }, []);
 
-
-  const handleDropdownChange = (value) => {
-    setSelectedDropdownValue(value);
+  const handleDropdownChange = (selectedValue) => {
+    console.log('Selected value in parent component:', selectedValue);
+    setSelectedDropdownValue(selectedValue);
   };
-
+  
   const handleSearchTextChange = (value) => {
+    console.log('Search value selected:', value);
     setSearchText(value);
   };
 
-    // Filter data based on selectedDropdownValue and searchText
-  const filteredData = data.filter((item) => {
-      if (selectedDropdownValue && item.Designation !== selectedDropdownValue) {
-        return false;
-      }
-      if (searchText && !item.Name.toLowerCase().includes(searchText.toLowerCase())) {
-        return false;
-      }
-      return true;
-  });
+// Filter data based on selectedDropdownValue and searchText
+const filteredData = data.filter((item) => {
+  // Check if a dropdown option is selected and filter based on it
+  if (selectedDropdownValue && item.Position !== selectedDropdownValue) {
+    return false;
+  }
+  // Optionally, you can add a search text filter here
+  if (searchText && !item.Name.toLowerCase().includes(searchText.toLowerCase())) {
+    return false;
+  }
+  return true;
+});
+
   
     return (
       <>
         <DropdownStaff
           selectedValue={selectedDropdownValue}
-          onDropdownChange={handleDropdownChange}
+          onDropdownChange={handleDropdownChange} // Correct prop name
         />
         <SearchbarStaff
           searchText={searchText}
           onSearchTextChange={handleSearchTextChange}
         />
         <div>
-          <Row gutter={[16, 24]}>
-            {filteredData.map((item, index) => (
-              <Col className="gutter-row" span={6} key={index}>
-                <div style={style}>{item.Name}</div>
-                <div style={style}>{item.Designation}</div>
-              </Col>
-            ))}
-          </Row>
+        <Row gutter={[16, 24]}>
+          {filteredData.map((item, index) => (
+            <Col className="gutter-row" span={6} key={index} style={style}>
+              <img src={item.CropPic} alt={`${item.Name}'s Image`} />
+              <div >{item.Name}</div>
+              <div >{item.Position}</div>
+              <div >{item.ContactInfo}</div>
+            </Col>
+          ))}
+        </Row>
+
         </div>
       </>
     );

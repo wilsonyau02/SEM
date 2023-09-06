@@ -1,47 +1,51 @@
-import React, { useState, useEffect } from 'react';
-import { DownOutlined } from '@ant-design/icons';
-import { Dropdown, Space } from 'antd';
-import { fetchDropdownOptions } from '../../supabase-client'; 
+import React, { useEffect, useState } from 'react';
+import { Select } from 'antd';
+import { fetchDropdownOptions } from '../../supabase-client'; // Import your Supabase client function
 
-const DropdownStaff = () => {
-  const [open, setOpen] = useState(false);
+const { Option } = Select;
+
+const DropdownStaff = ({ onDropdownChange }) => {
   const [dropdownOptions, setDropdownOptions] = useState([]);
+  const [selectedValue, setSelectedValue] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
-      const options = await fetchDropdownOptions();
+      const options = await fetchDropdownOptions(); // Fetch options from your database
       setDropdownOptions(options);
     }
     fetchData();
   }, []);
 
-  const handleMenuClick = () => {
-    setOpen(false);
+  const handleDropdownChange = (value) => {
+    setSelectedValue(value);
+    onDropdownChange(value); // Call the callback with the selected value
   };
 
-  const handleOpenChange = (flag) => {
-    setOpen(flag);
+  const clearSelection = () => {
+    setSelectedValue(null);
+    onDropdownChange(null);
   };
+
+  const uniqueOptions = [...new Set(dropdownOptions)];
 
   return (
-    <Dropdown
-      menu={{
-        items: dropdownOptions.map((option) => ({
-          label: option,
-          key: option,
-        })),
-        onClick: handleMenuClick,
-      }}
-      onOpenChange={handleOpenChange}
-      open={open}
+
+    <Select
+      style={{ width: 200 }}
+      placeholder="Select a position"
+      onChange={handleDropdownChange}
+      value={selectedValue}
     >
-      <a onClick={(e) => e.preventDefault()}>
-        <Space>
-          Campus Branch
-          <DownOutlined />
-        </Space>
-      </a>
-    </Dropdown>
+      {/* Add an "All Positions" option */}
+      <Option onChange={ clearSelection}>
+        All Positions
+      </Option>
+      {uniqueOptions.map((option) => (
+        <Option key={option} value={option}>
+          {option}
+        </Option>
+      ))}
+    </Select>
   );
 };
 

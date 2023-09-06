@@ -10,7 +10,7 @@ export async function fetchDropdownOptions() {
     try {
       const { data, error } = await supabase
         .from('Academician')
-        .select('Branch'); 
+        .select('Position'); 
   
       if (error) {
         console.error('Error fetching dropdown options:', error.message);
@@ -18,7 +18,7 @@ export async function fetchDropdownOptions() {
       }
   
       if (data) {
-        const options = data.map((item) => item.Branch);
+        const options = data.map((item) => item.Position);
         return options;
       } else {
         // Data is empty, handle accordingly
@@ -31,29 +31,29 @@ export async function fetchDropdownOptions() {
     }
 }
 
-// Function to fetch search options from Supabase (academician)
-export async function searchAcademiciansByBranch(value) {
-  try {
-    const { data, error } = await supabase
-      .from('Academician')
-      .select('Name')
-      .ilike('Name', `%${value}%`); // Use ilike to perform a case-insensitive search
+// // Function to fetch search options from Supabase (academician)
+// export async function searchAcademiciansByBranch(value) {
+//   try {
+//     const { data, error } = await supabase
+//       .from('Academician')
+//       .select('Name')
+//       .ilike('Name', `%${value}%`); // Use ilike to perform a case-insensitive search
 
-    if (error) {
-      console.error('Error fetching search results:', error.message);
-      return [];
-    }
+//     if (error) {
+//       console.error('Error fetching search results:', error.message);
+//       return [];
+//     }
 
-    const searchResults = data.map((item) => ({
-      value: item.Name,
-      label: item.Name,
-    }));
-    return searchResults;
-  } catch (exception) {
-    console.error('An error occurred:', exception.message);
-    return [];
-  }
-}
+//     const searchResults = data.map((item) => ({
+//       value: item.Name,
+//       label: item.Name,
+//     }));
+//     return searchResults;
+//   } catch (exception) {
+//     console.error('An error occurred:', exception.message);
+//     return [];
+//   }
+// }
 
 // Function to display staffs from Supabase (academician)
 export async function  fetchSupabaseData(table, selectedField, searchValue) {
