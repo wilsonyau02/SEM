@@ -37,7 +37,7 @@ const DropdownStaff = ({ onDropdownChange }) => {
       value={selectedValue}
     >
       {/* Add an "All Positions" option */}
-      <Option onChange={ clearSelection}>
+      <Option  onChange={ clearSelection}>
         All Positions
       </Option>
       {uniqueOptions.map((option) => (
