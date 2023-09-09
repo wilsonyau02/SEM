@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Select } from 'antd';
-import { fetchDropdownOptions } from '../../supabase-client'; // Import your Supabase client function
+import { fetchDropdownOptions } from '../../../supabase-client'; // Import your Supabase client function
 
 const { Option } = Select;
 

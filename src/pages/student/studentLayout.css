@@ -1,0 +1,47 @@
+.navBarClass{
+    background-color: #fff;
+    /* height: 6em; */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+}
+
+
+.navBarClass .ant-menu-horizontal {
+    border-bottom: none;
+}
+
+.navBarClass .ant-menu-item-selected {
+    /* background-color: #430f58 !important; */
+    color: #fff !important;
+    background-color: #eea500 !important;
+    /* font-weight: bold; */
+}
+
+.navBarClass .ant-menu-item-selected::after {
+    border-bottom: 5px solid #fdce62 !important;
+}
+
+.navBarClass .ant-menu-item:hover::after {
+    border-bottom: 5px solid #fdce62 !important;
+}
+
+.navBarClass .ant-menu-item:hover {
+    color: #fff !important;
+    background-color: #eea500 !important;
+}
+
+.navBarClass .ant-menu-item {
+    display: inline-block;
+    margin-right: 3px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #eea500;
+    font-weight: bold;
+    padding: 0px 18px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+

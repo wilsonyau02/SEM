@@ -1,15 +1,16 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/home/Home";
-import Application from "./pages/application/Application";
-import AcademicianDirectory from "./pages/academician/AcademicianDirectory";
-import Help from "./pages/help/Help";
-import PageLayout from "./pages/Layout";
+import Home from "./pages/student/home/Home";
+import Application from "./pages/student/application/Application";
+import AcademicianDirectory from "./pages/student/academician/AcademicianDirectory";
+import Help from "./pages/student/help/Help";
+import PageLayout from "./pages/student/StudentLayout";
 import Register from "./pages/authentication/Register";
 import Login from "./pages/authentication/Login";
 import ForgotPassword from "./pages/authentication/ForgotPassword";
 import UpdatePassword from "./pages/authentication/UpdatePassword";
 import NotFound from "./pages/result/NotFound";
 import { useAuth } from "./context/AuthProvider";
+import ProcessApplication from "./pages/admin/ProcessApplication";
 
 
 function App() {
@@ -33,9 +34,17 @@ function App() {
             </Route>
           </>
         );
-      } else if (userSession.user.user_metadata.userType === "admin") {
+      } else {
         return (
           <>
+            <Route path="/admin/" element={<ProcessApplication />}/>
+            {/* <Route path="/admin/" element={<PageLayout />}>
+              <Route index element={<Home />} />
+              <Route path="home" element={<Home />} />
+              <Route path="application" element={<Application />} />
+              <Route path="academician" element={<AcademicianDirectory />} />
+              <Route path="help" element={<Help />} />
+            </Route> */}
           </>
         );
       }

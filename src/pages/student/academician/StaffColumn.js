@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row, Modal } from 'antd';
-import { fetchSupabaseData } from '../../supabase-client'; 
+import { fetchSupabaseData } from '../../../supabase-client'; 
 import DropdownStaff from './Dropdown';
 import SearchbarStaff from './Searchbar';
 

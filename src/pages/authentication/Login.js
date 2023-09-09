@@ -29,11 +29,18 @@ function Login() {
         }
 
         if (user && session){
+
             message.success('Login successful');
 
-            setTimeout(() => {
-                window.location.href = '/student';
-            }, 1000);
+            if (user.user_metadata.userType === 'student'){
+                setTimeout(() => {
+                    window.location.href = '/student';
+                }, 1000);
+            } else {
+                setTimeout(() => {
+                    window.location.href = '/admin';
+                }, 1000);
+            }
         }
     };
 

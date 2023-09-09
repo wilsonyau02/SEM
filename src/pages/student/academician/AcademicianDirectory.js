@@ -1,8 +1,7 @@
 import { Divider } from 'antd';
 import React from 'react';
 import StaffColumnGrid from './StaffColumn';
-import DropdownStaff from './Dropdown';
-import SearchbarStaff  from './Searchbar';
+
 
 function AcademicianDirectory(){
     return (
