@@ -1,0 +1,142 @@
+.text-center {
+    text-align: center;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 97vh;
+}
+
+.container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    position: relative;
+    overflow: hidden;
+    width: 900px;
+    max-width: 100%;
+    min-height: 600px;
+}
+
+
+.mobile-container {
+    padding: 0px 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    position: relative;
+    overflow-y: scroll;
+    width: 450px;
+    max-width: 100%;
+    min-height: 600px;
+}
+
+.mobile-container::-webkit-scrollbar {
+    display: none; /* Hide the scrollbar */
+}
+
+.form-container.login {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+    left: 0;
+    width: 50%;
+}
+
+.form-container.register {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+    right: 0;
+    width: 50%;
+}
+
+/* .form-container.register-mobile {
+    
+    height: 50%;
+    transition: all 0.6s ease-in-out;
+    width: 50%;
+} */
+
+.form-container.forgot-password {
+    transition: all 0.6s ease-in-out;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.form-container form {
+    background: #fff;
+    padding: 50px;
+    height: 100%;
+}
+
+.form-container form h1 {
+    color: var(--text-color);
+    text-align: center;
+}
+
+.form-container input {
+    font-size: 14px;
+}
+
+button {
+    color: #fff;
+    font-size: 12px;
+    letter-spacing: 1px;
+    transition: transform 20ms ease-in;
+    cursor: pointer;
+    margin: 4px 0;
+    margin-bottom: 2px;
+    width: 100%;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+button:focus {
+    outline: none;
+}
+
+.form-submit-btn {
+    margin-top: 20px;
+}
+
+button.ghost {
+    background: transparent;
+    border-color: #fff;
+}
+
+.bg-container.login {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.bg-container.register {
+    position: absolute;
+    top: 0;
+    right: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.bg-container.forgot-password {
+    width: 50%;
+    height: 40%;
+    z-index: 1;
+    margin : 0 auto;
+}

@@ -1,6 +1,7 @@
 import { Layout, Menu } from 'antd';
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthProvider';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -9,6 +10,8 @@ function PageLayout(){
     const [currentKey, setCurrentKey] = useState('/');
 
     const navigate = useNavigate();
+
+    const {signOut} = useAuth();
 
     const items = [
         {
@@ -27,9 +30,18 @@ function PageLayout(){
             key: '/help',
             label: 'Help',
         },
+        {
+            key: '/logout',
+            label: 'Logout',
+        },
     ];
 
-    const handleClick = (e) => {
+    const handleClick = async (e) => {
+        if (e.key === '/logout'){
+            await signOut();
+            navigate('/login');
+            return;
+        }
         setCurrentKey(e.key);
         navigate(e.key);
     }
