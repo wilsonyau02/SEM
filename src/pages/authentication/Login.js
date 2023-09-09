@@ -4,6 +4,8 @@ import { Form, Input, Button, Checkbox, Typography, message } from 'antd';
 import { LoginOutlined } from '@ant-design/icons';
 import loginBg from '../../images/loginBg.jpg'
 import { useAuth } from '../../context/AuthProvider';
+import { supabase } from '../../supabase-client';
+import { getCurrentDateTime } from '../../components/timeUtils';
 
 const { Title } = Typography;
 
@@ -16,6 +18,8 @@ function Login() {
 
     const { login, user } = useAuth();
 
+
+
     const onFinish = async (values) => {
         console.log("Received values of form: ", values);
 
@@ -23,12 +27,14 @@ function Login() {
             data: { user, session },
             error
         } = await login(values.email, values.password);
-        
+
         if (error) {
             message.error(error.error_description || error.message);
         }
 
-        if (user && session){
+        if (user && session) {
+
+            storeIPAddress("SIGNED_IN");
 
             message.success('Login successful');
 
@@ -43,6 +49,36 @@ function Login() {
             }
         }
     };
+
+    async function storeIPAddress(event) {
+        try {
+            const userID = (await supabase.auth.getUser()).data.user.id;
+
+            const currentDateTime = getCurrentDateTime();
+            console.log("userID", userID);
+            console.log("storeIPAddress", event);
+
+            const response = await fetch("https://api.ipify.org?format=json");
+            const data = await response.json();
+
+            const ip = data.ip;
+
+            const { error } = await supabase.from("activity_log").insert([
+                {
+                    ip_address: ip,
+                    event_name: event,
+                    time: currentDateTime,
+                    userID: userID, // Assuming you want to associate this with a user
+                },
+            ]);
+            if (error) {
+                console.log("Error storing IP address:", error);
+            }
+        } catch (error) {
+            console.error("Error storing IP address:", error);
+        }
+    }
+
 
     const onFinishFailed = (errorInfo) => {
         console.log("Failed:", errorInfo);

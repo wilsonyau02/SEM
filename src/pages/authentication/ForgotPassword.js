@@ -20,19 +20,19 @@ function ForgotPassword() {
     const onFinish = async (values) => {
         console.log("Received values of form: ", values);
 
-        // const {data, error} = await passwordReset(values.email);
+        const {data, error} = await passwordReset(values.email);
 
-        // if (error){
-        //     console.log(error);
-        // }
+        if (error){
+            console.log(error);
+        }
 
-        // if (data){
-        //     message.success('Password reset link sent successfully');
+        if (data){
+            message.success('Password reset link sent successfully');
 
-        //     setTimeout(() => {
-        //         window.location.href = '/login';
-        //     }, 1000);
-        // }
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 1000);
+        }
 
     };
 

@@ -42,6 +42,10 @@ const AuthProvider = ({ children }) => {
 
     getSession();
 
+    
+
+
+
 
     const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
       // console.log(event)

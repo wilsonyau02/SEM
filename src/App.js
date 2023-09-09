@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Home from "./pages/student/home/Home";
 import Application from "./pages/student/application/Application";
 import AcademicianDirectory from "./pages/student/academician/AcademicianDirectory";
@@ -25,19 +25,37 @@ function App() {
       if (userSession.user.user_metadata.userType === "student") {
         return (
           <>
+
+            <Route path="/" element={<Navigate to="/student" />} />
+            <Route path="/login" element={<Navigate to="/student" />} />
+            <Route path="/signup" element={<Navigate to="/student" />} />
+            <Route path="/forgot-password" element={<Navigate to="/student" />} />
+            <Route path="/update-password" element={<Navigate to="/student" />} />
+
             <Route path="/student/" element={<PageLayout />}>
               <Route index element={<Home />} />
               <Route path="home" element={<Home />} />
               <Route path="application" element={<Application />} />
               <Route path="academician" element={<AcademicianDirectory />} />
               <Route path="help" element={<Help />} />
+              <Route path="*" element={<NotFound backTo="student"/>} />
             </Route>
+            <Route path="*" element={<NotFound backTo="student"/>} />
+
           </>
         );
       } else {
         return (
           <>
-            <Route path="/admin/" element={<ProcessApplication />}/>
+            <Route path="/" element={<Navigate to="/admin" />} />
+            <Route path="/login" element={<Navigate to="/admin" />} />
+            <Route path="/signup" element={<Navigate to="/admin" />} />
+            <Route path="/forgot-password" element={<Navigate to="/admin" />} />
+            <Route path="/update-password" element={<Navigate to="/admin" />} />
+
+            <Route path="/admin/" element={<ProcessApplication />} />
+            <Route path="*" element={<NotFound backTo="admin"/>} />
+
             {/* <Route path="/admin/" element={<PageLayout />}>
               <Route index element={<Home />} />
               <Route path="home" element={<Home />} />
@@ -63,9 +81,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/update-password" element={<UpdatePassword />} />
-        <Route path="*" element={<NotFound />} />
-
-
+        <Route path="*" element={<NotFound backTo="login"/>} />
       </Routes>
     </>
   );

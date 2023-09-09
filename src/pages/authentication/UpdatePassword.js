@@ -5,6 +5,9 @@ import updatePasswordBg from "../../images/updatePasswordBg.jpg";
 import { useMediaQuery } from "react-responsive";
 import { supabase } from "../../supabase-client";
 import { useAuth } from "../../context/AuthProvider";
+import { getCurrentDateTime } from "../../components/timeUtils";
+import NotFound from "../result/NotFound";
+
 
 const { Title } = Typography;
 
@@ -18,6 +21,7 @@ function UpdatePassword() {
 
     const [email, setEmail] = useState('')
     const [isLoading, setIsLoading] = useState(true);
+    const [isSession, setIsSession] = useState(false);
 
     const { updatePassword } = useAuth();
 
@@ -34,25 +38,19 @@ function UpdatePassword() {
             message.error(error.error_description || error.message);
         }
 
+        if (data.session === null) {
+            setIsSession(true);
+            setIsLoading(false);
+        }
+
         if (data.session) {
             // Handle success case
             setEmail(data.session.user.email);
-              setIsLoading(false);
+            setIsLoading(false);
         }
     }
 
-    if (isLoading) {
-        return (
-          <Spin
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-            }}
-          />
-        );
-      }
+
 
 
 
@@ -66,6 +64,9 @@ function UpdatePassword() {
         }
 
         if (data) {
+
+            await storeIPAddress("PASSWORD_UPDATED");
+
             message.success('Password updated successfully');
 
             setTimeout(() => {
@@ -73,6 +74,31 @@ function UpdatePassword() {
             }, 1000);
         }
     };
+
+    async function storeIPAddress(event) {
+        try {
+            const userID = (await supabase.auth.getUser()).data.user.id;
+            const currentDateTime = getCurrentDateTime();
+            const response = await fetch("https://api.ipify.org?format=json");
+            const data = await response.json();
+            const ip = data.ip;
+
+            const { error } = await supabase.from("activity_log").insert([
+                {
+                    ip_address: ip,
+                    event_name: event,
+                    time: currentDateTime,
+                    userID: userID, // Assuming you want to associate this with a user
+                },
+            ]);
+            if (error) {
+                console.log("Error storing IP address:", error);
+            }
+        } catch (error) {
+            console.error("Error storing IP address:", error);
+        }
+    }
+
 
     const onFinishFailed = (errorInfo) => {
         console.log("Failed:", errorInfo);
@@ -173,51 +199,70 @@ function UpdatePassword() {
         )
 
     }
+
     return (
         <>
-            {isTabletOrDesktop ?
-                <div className="wrapper">
-                    <div className="container"
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            flexDirection: 'column',
-                        }}>
-                        <div
-                            className="bg-container forgot-password"
-                            style={{
-                                backgroundImage: `url(${updatePasswordBg})`,
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center center',
-                                backgroundRepeat: 'no-repeat',
-                            }}
-                        >
-                        </div>
-                        <div className="form-container forgot-password">
-                            <FormContainer />
-                        </div>
-                    </div>
-                </div>
-                :
-                <div className="wrapper">
-                    <div className="mobile-container">
-                        <div
-                            className="form-container forgot-password-mobile"
-                            style={{
-                                width: '100%',
-                                marginTop: '30%',
-                            }}>
-                            <FormContainer
-                                mobileStyle={{
-                                    padding: '30px 50px',
-                                }} />
-                        </div>
-                    </div>
-                </div>
-
-            }
+            {isLoading ? (
+                <Spin
+                    style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                    }}
+                />
+            ) : (
+                <>
+                    {isSession ? (
+                        <NotFound backTo="login" />
+                    ) : (
+                        <>
+                            {isTabletOrDesktop ? (
+                                <div className="wrapper">
+                                    <div className="container"
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            flexDirection: 'column',
+                                        }}>
+                                        <div
+                                            className="bg-container forgot-password"
+                                            style={{
+                                                backgroundImage: `url(${updatePasswordBg})`,
+                                                backgroundSize: 'cover',
+                                                backgroundPosition: 'center center',
+                                                backgroundRepeat: 'no-repeat',
+                                            }}
+                                        >
+                                        </div>
+                                        <div className="form-container forgot-password">
+                                            <FormContainer />
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="wrapper">
+                                    <div className="mobile-container">
+                                        <div
+                                            className="form-container forgot-password-mobile"
+                                            style={{
+                                                width: '100%',
+                                                marginTop: '30%',
+                                            }}>
+                                            <FormContainer
+                                                mobileStyle={{
+                                                    padding: '30px 50px',
+                                                }} />
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </>
+                    )}
+                </>
+            )}
         </>
-    )
+    );
 }
 
 export default UpdatePassword;
