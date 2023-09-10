@@ -23,7 +23,7 @@ function Register() {
 
         let isEmailExist = false;
 
-        const { data, error} = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
             email: values.email,
             password: values.password,
             options: {
@@ -52,7 +52,7 @@ function Register() {
             setTimeout(() => {
                 window.location.href = '/login';
             }, 3000);
-            
+
         }
     };
     async function storeIPAddress(event) {
@@ -95,7 +95,7 @@ function Register() {
         setChecked(e.target.checked);
     };
 
-    function FormContainer({ mobileStyle}) {
+    function FormContainer({ mobileStyle }) {
         return (
             <Form
                 name="signup"
@@ -227,17 +227,15 @@ function Register() {
                     </Col>
                 </Row>
 
-                <Form.Item>
-                    <Form.Item
-                        name="agree"
-                        valuePropName="checked"
-                        noStyle
-                        rules={[{ validator: validation }]}
-                    >
-                        <Checkbox checked={checked} onChange={onCheckboxChange}>
-                            I agree to <a href="#">Terms of Use & Privacy policy</a>.
-                        </Checkbox>
-                    </Form.Item>
+                <Form.Item
+                    name="agree"
+                    valuePropName="checked"
+                    noStyle
+                    rules={[{ validator: validation }]}
+                >
+                    <Checkbox checked={checked} onChange={onCheckboxChange}>
+                        I agree to <a href="#">Terms of Use & Privacy policy</a>.
+                    </Checkbox>
                 </Form.Item>
 
                 <Button
@@ -248,7 +246,7 @@ function Register() {
                     shape="round"
                     icon={<UserAddOutlined />}
                     size="large"
-                    style={{ marginTop: '0rem' }}
+                    style={{ marginTop: '2rem' }}
                 >
                     Sign Up
                 </Button>
@@ -288,13 +286,13 @@ function Register() {
                         <div className="mobile-container">
                             <div
                                 className="form-container register-mobile"
-                                style={{ 
-                                    width: '100%' ,
-                                    }}>
-                                <FormContainer 
+                                style={{
+                                    width: '100%',
+                                }}>
+                                <FormContainer
                                     mobileStyle={{
                                         padding: '30px 50px',
-                                    }}/>
+                                    }} />
                             </div>
                         </div>
                     </div>

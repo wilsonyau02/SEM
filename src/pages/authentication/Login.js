@@ -38,7 +38,7 @@ function Login() {
 
             message.success('Login successful');
 
-            if (user.user_metadata.userType === 'student'){
+            if (user.user_metadata.userType === 'student') {
                 setTimeout(() => {
                     window.location.href = '/student';
                 }, 1000);
@@ -137,15 +137,15 @@ function Login() {
                     <Input.Password placeholder="Password" size="large" />
                 </Form.Item>
 
-                <Form.Item>
-                    <Form.Item name="remember" valuePropName="checked" noStyle>
-                        <Checkbox>Remember me</Checkbox>
-                    </Form.Item>
 
-                    <a className="login-form-forgot" href="/forgot-password">
-                        Forgot password?
-                    </a>
+                <Form.Item name="remember" valuePropName="checked" noStyle>
+                    <Checkbox>Remember me</Checkbox>
                 </Form.Item>
+
+                <a className="login-form-forgot" href="/forgot-password">
+                    Forgot password?
+                </a>
+
 
                 <Button
                     // loading={auth.loading}
@@ -154,6 +154,7 @@ function Login() {
                     shape="round"
                     icon={<LoginOutlined />}
                     size="large"
+                    style={{ marginTop: "2rem" }}
                 >
                     Sign In
                 </Button>
