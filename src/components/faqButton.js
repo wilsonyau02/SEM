@@ -1,13 +1,24 @@
-import { FloatButton } from "antd";
 import { CommentOutlined } from "@ant-design/icons";
+import { useState } from "react";
+import FaqChatDialog from "./faqChatDialog";
 
 const FaqButton = () => {
-  const statusColor = "red";
+  const [dialogVisible, setDialogVisible] = useState(false);
+
+  const openDialog = () => {
+    setDialogVisible(!dialogVisible);
+  };
 
   return (
-    <button className="w-16 h-16 border-2 border-orange-200 rounded-full">
-      <CommentOutlined className="text-2xl" />
-    </button>
+    <div>
+      <button
+        onClick={openDialog}
+        className="w-16 h-16 bg-orange-400 rounded-full absolute bottom-10 right-10 hover:bg-orange-500 active:border-4 active:border-orange-600"
+      >
+        <CommentOutlined className="text-2xl text-white" />
+      </button>
+      <FaqChatDialog isVisible={dialogVisible} />
+    </div>
   );
 };
 
