@@ -31,7 +31,7 @@ const DropdownStaff = ({ onDropdownChange }) => {
   return (
 
     <Select
-      style={{ width: 200 }}
+      style={{ width: 200 , padding:"5px"}}
       placeholder="Select a position"
       onChange={handleDropdownChange}
       value={selectedValue}

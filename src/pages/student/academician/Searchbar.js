@@ -17,13 +17,16 @@ const SearchbarStaff = ({ onSearchTextChange }) => {
     <AutoComplete
       popupMatchSelectWidth={200}
       style={{
-        width: 300,
+        width: 200,
+        padding:"5px"
       }}
       value={options}
       onSelect={onSelect}
       onSearch={handleSearch}
+      placeholder="Search for a staff..." 
+
     >
-      <Input.Search size="large" placeholder="Search for a staff..." enterButton />
+      {/* <Input.Search size="large" placeholder="Search for a staff..."  /> */}
     </AutoComplete>
   );
 };
