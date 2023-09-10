@@ -1,7 +1,9 @@
+import FaqButton from "../../../components/faqButton";
+
 function Help(){
     return (
-        <div style={{padding: '1rem', height: '400px'}}>
-            Help
+        <div>
+            <FaqButton/>
         </div>
     )
 }
