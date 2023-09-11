@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row, Modal, Input } from 'antd';
+import { Col, Row, Modal } from 'antd';
 import { fetchSupabaseData } from '../../../supabase-client'; 
 import DropdownStaff from './Dropdown';
 import SearchbarStaff from './Searchbar';
 
 const style = {
-  // background: '#eb4c42',
   padding: '8px',
 };
 
@@ -94,8 +93,9 @@ const StaffColumnGrid = () => {
             <Col className="gutter-row" span={6} key={index} style={style}>
 
               <div onClick={() => handleColumnClick(item)} className="gutter-row-content"  style={{ backgroundColor: '#E9E9E9', padding:"10px", height: '50%' }}>
-                <img src={item.CropPic} alt={`${item.Name}'s Image`} />
-                <div  style = {{ fontSize: '18.5px', }}>{item.Name}</div>
+                <img style = {{}} src={item.CropPic} alt={`${item.Name}'s`} />
+               
+                <div  style = {{ fontSize: '18.5px' }}>{item.Name}</div>
                 <div style = {{ fontSize: '15px', padding:"5px", fontStyle: 'italic'}}>{item.Position}</div>
                 <div>
                   <a href={`mailto:${item.ContactInfo}`}>{item.ContactInfo}</a>
@@ -116,11 +116,13 @@ const StaffColumnGrid = () => {
       >
       {selectedRow && (
       <>
-      <img
-        src={selectedRow.FullPic}
-        alt={`${selectedRow.Name}'s Image`}
-        style={{ padding: "20px" }}
-      />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <img
+          src={selectedRow.FullPic}
+          alt={`${selectedRow.Name}'s Image`}
+          style={{ padding: '20px' }}
+        />
+      </div>
       <div style={{ textAlign: "left", marginLeft: "20px" }}>
         <div style={{ marginBottom: "10px" }}>
           <strong>Degree Earned:</strong> {selectedRow.DegreesEarned}
@@ -158,6 +160,7 @@ const StaffColumnGrid = () => {
           <div>"{selectedRow.Quote}"</div>
         </div>
       </div>
+
     </>
     
         
