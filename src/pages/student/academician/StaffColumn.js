@@ -20,6 +20,7 @@ const search = {
 const column = {
   padding:"10px",
   textAlign: 'center',
+  // backgroundColor: 'red',
 };
 
 const StaffColumnGrid = () => {
@@ -82,7 +83,7 @@ const StaffColumnGrid = () => {
               />
         </div>
       </div>
-      <div style = {{paddingLeft: "60%"}}>
+      <div style = {{paddingLeft: "50%"}}>
         <p>Number of Staff Displayed: {filteredData.length}</p>
       </div>
     </div>
@@ -90,9 +91,10 @@ const StaffColumnGrid = () => {
     <div style = {column}>
         <Row gutter={[16, 24]}>
           {filteredData.map((item, index) => (
-            <Col className="gutter-row" span={6} key={index} style={style}>
+            <Col className="gutter-row" span={6} key={index} style={style} xs={24} sm={24} md={12} lg={8} xl={6}>
 
-              <div onClick={() => handleColumnClick(item)} className="gutter-row-content"  style={{ backgroundColor: '#E9E9E9', padding:"10px", height: '50%' }}>
+              <div onClick={() => handleColumnClick(item)} className="gutter-row-content"  
+              style={{ backgroundColor: '#E9E9E9', padding:"10px", height: '100%' }}>
                 <img style = {{}} src={item.CropPic} alt={`${item.Name}'s`} />
                
                 <div  style = {{ fontSize: '18.5px' }}>{item.Name}</div>
