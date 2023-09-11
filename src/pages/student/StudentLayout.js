@@ -113,6 +113,7 @@ function PageLayout() {
                             justifyContent: 'start',
                             flex: 'auto',
                             minWidth: '0',
+                            marginLeft: '2em',
                         }}
 
                     />
