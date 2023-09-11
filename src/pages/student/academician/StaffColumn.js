@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row, Modal } from 'antd';
+import { Col, Row, Modal, Pagination } from 'antd';
 import { fetchSupabaseData } from '../../../supabase-client'; 
-import DropdownStaff from './Dropdown';
+import DropdownStaff from './DropdownStaff';
+import DropdownDepartment from './DropdownDepartment';
 import SearchbarStaff from './Searchbar';
 
 const style = {
@@ -18,7 +19,7 @@ const search = {
 };
 
 const column = {
-  padding:"10px",
+  padding:"40px",
   textAlign: 'center',
   // backgroundColor: 'red',
 };
@@ -27,7 +28,9 @@ const StaffColumnGrid = () => {
   const [data, setData] = useState([]);
   const [selectedDropdownValue, setSelectedDropdownValue] = useState('');
   const [searchText, setSearchText] = useState('');
-  const [selectedRow, setSelectedRow] = useState(''); // Step 1
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [selectedRow, setSelectedRow] = useState(''); 
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     async function fetchData() {
@@ -38,6 +41,10 @@ const StaffColumnGrid = () => {
 
     fetchData();
   }, []);
+
+  const handleDepartmentChange = (selectedValue) => {
+    setSelectedDepartment(selectedValue);
+  };
 
   const handleDropdownChange = (selectedValue) => {
     setSelectedDropdownValue(selectedValue);
@@ -51,8 +58,16 @@ const StaffColumnGrid = () => {
     setSelectedRow(rowData); // Step 2
   };
 
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   const filteredData = data.filter((item) => {
     if (selectedDropdownValue && item.Position !== selectedDropdownValue) {
+      return false;
+    }
+    if (selectedDepartment && item.Department !== selectedDepartment) {
       return false;
     }
     if (searchText && !item.Name.toLowerCase().includes(searchText.toLowerCase())) {
@@ -60,6 +75,13 @@ const StaffColumnGrid = () => {
     }
     return true;
   });
+  
+
+  const itemsPerPage = 8; 
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const itemsToDisplay = filteredData.slice(startIndex, endIndex);
+
 
   return (
     <>
@@ -72,7 +94,13 @@ const StaffColumnGrid = () => {
               style = {{padding:"5px"}}
             />
         </div>
-      
+        <div>
+          <DropdownDepartment
+            selectedValue={selectedDepartment}
+            onDepartmentChange={handleDepartmentChange}
+            style={{ padding: '5px' }}
+          />
+        </div>
         <div>
           <SearchbarStaff
                 searchText={searchText}
@@ -80,17 +108,17 @@ const StaffColumnGrid = () => {
                 onSearchTextChange={handleSearchTextChange}
                 suffix={null} 
                 style = {{padding:"5px"}}
-              />
+          />
         </div>
       </div>
-      <div style = {{paddingLeft: "50%"}}>
+      <div style = {{paddingLeft: "44%"}}>
         <p>Number of Staff Displayed: {filteredData.length}</p>
       </div>
     </div>
 
     <div style = {column}>
         <Row gutter={[16, 24]}>
-          {filteredData.map((item, index) => (
+          {itemsToDisplay.map((item, index) => (
             <Col className="gutter-row" span={6} key={index} style={style} xs={24} sm={24} md={12} lg={8} xl={6}>
 
               <div onClick={() => handleColumnClick(item)} className="gutter-row-content"  
@@ -108,6 +136,14 @@ const StaffColumnGrid = () => {
           ))}
         </Row>
     </div>
+
+    <Pagination 
+    style = {{textAlign : "center"}}
+        current={currentPage}
+        total={filteredData.length}
+        pageSize={itemsPerPage}
+        onChange={handlePageChange}
+      />
 
       <Modal
         title={selectedRow.Name}
