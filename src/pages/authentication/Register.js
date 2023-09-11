@@ -1,5 +1,4 @@
 import { useMediaQuery } from 'react-responsive';
-import './auth.css';
 import { Form, Input, Button, Checkbox, Typography, Row, Col, message } from 'antd';
 import registerBg from '../../images/registerBg.jpg'
 import { UserAddOutlined } from '@ant-design/icons';

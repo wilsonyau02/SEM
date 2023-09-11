@@ -1,5 +1,4 @@
 import { useMediaQuery } from 'react-responsive';
-import './auth.css';
 import { Form, Input, Button, Checkbox, Typography, message } from 'antd';
 import { LoginOutlined } from '@ant-design/icons';
 import loginBg from '../../images/loginBg.jpg'
@@ -142,7 +141,7 @@ function Login() {
                     <Checkbox>Remember me</Checkbox>
                 </Form.Item>
 
-                <a className="login-form-forgot" href="/forgot-password">
+                <a href="/forgot-password">
                     Forgot password?
                 </a>
 
@@ -155,6 +154,7 @@ function Login() {
                     icon={<LoginOutlined />}
                     size="large"
                     style={{ marginTop: "2rem" }}
+                    className='form-button'
                 >
                     Sign In
                 </Button>

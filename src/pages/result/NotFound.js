@@ -16,7 +16,7 @@ function NotFound({ backTo }) {
         }
     }
 
-    const extraButton = <Button type="primary" onClick={handleBackHome} style={{ width: "15%" }}>
+    const extraButton = <Button type="primary" onClick={handleBackHome} style={{ width: "15%", backgroundColor: "#1668dc" }}>
         Back to {backTo === "login" ? " Login" : " Home"} 
     </Button>;
 
@@ -26,6 +26,7 @@ function NotFound({ backTo }) {
         subTitle="Sorry, the page you visited does not exist."
         style={{ height: "100vh", background: "white" }}
         extra={extraButton}
+        className='not-found'
     />;
 }
 

@@ -100,7 +100,7 @@ function ForgotPassword() {
                 </Button>
 
                 <div className="text-center mt-3">
-                    <a href="/login">Back to login</a>
+                    <a href="/login" >Back to login</a>
                 </div>
 
             </Form >
