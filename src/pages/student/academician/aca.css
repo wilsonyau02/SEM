@@ -1,15 +1,19 @@
 .gutter-row:hover .gutter-row-content {
-    /* Apply the expanded state styling */
-    transform: scale(1.1);
-    transition: transform 0.2s ease;
-  }
+  /* Apply the expanded state styling */
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
 
-  .gutter-row-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-  }
-  
-
-  
+.gutter-row-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 0;
+  box-sizing: border-box;
+  box-shadow: 0 -1px 1px 0 rgba(0, 28, 36, .3), 0 1px 1px 0 rgba(0, 28, 36, .3), 1px 1px 1px 0 rgba(0, 28, 36, .15), -1px 1px 1px 0 rgba(0, 28, 36, .15);
+  padding: 10px;
+  height: 100%;
+}

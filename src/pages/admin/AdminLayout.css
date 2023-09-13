@@ -1,0 +1,17 @@
+.adminLayout .ant-menu-item-selected {
+    background-color: #eea500 !important;
+    color: white !important;
+    font-weight: bold;
+}
+
+
+.menuSidebar .ant-menu-item {
+    margin-bottom: 20px !important;
+    font-weight: 500;
+}
+
+.ant-menu-vertical>li>svg {
+    margin-left: -5px !important;
+    margin-top: 7px !important;
+
+}

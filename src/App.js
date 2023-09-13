@@ -10,7 +10,10 @@ import ForgotPassword from "./pages/authentication/ForgotPassword";
 import UpdatePassword from "./pages/authentication/UpdatePassword";
 import NotFound from "./pages/result/NotFound";
 import { useAuth } from "./context/AuthProvider";
-import ProcessApplication from "./pages/admin/ProcessApplication";
+import ProcessApplication from "./pages/admin/application/ProcessApplication";
+import AdminLayout from "./pages/admin/AdminLayout";
+import Enquiry from "./pages/admin/enquiry/Enquiry";
+import ActivityLog from "./pages/admin/activityLog/ActivityLog";
 
 
 function App() {
@@ -53,16 +56,15 @@ function App() {
             <Route path="/forgot-password" element={<Navigate to="/admin" />} />
             <Route path="/update-password" element={<Navigate to="/admin" />} />
 
-            <Route path="/admin/" element={<ProcessApplication />} />
-            <Route path="*" element={<NotFound backTo="admin"/>} />
+            
 
-            {/* <Route path="/admin/" element={<PageLayout />}>
+            <Route path="/admin/" element={<AdminLayout />}>
               <Route index element={<Home />} />
-              <Route path="home" element={<Home />} />
-              <Route path="application" element={<Application />} />
-              <Route path="academician" element={<AcademicianDirectory />} />
-              <Route path="help" element={<Help />} />
-            </Route> */}
+              <Route path="application" element={<ProcessApplication />} />
+              <Route path="enquiry" element={<Enquiry />} />
+              <Route path="activityLog" element={<ActivityLog />} />
+              <Route path="*" element={<NotFound backTo="admin"/>} />
+            </Route>
           </>
         );
       }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row, Modal, Pagination } from 'antd';
-import { fetchSupabaseData } from '../../../supabase-client'; 
+import { Col, Row, Modal, Pagination, Empty } from 'antd';
+import { fetchSupabaseData } from '../../../supabase-client';
 import DropdownStaff from './DropdownStaff';
 import DropdownDepartment from './DropdownDepartment';
 import SearchbarStaff from './Searchbar';
@@ -10,26 +10,45 @@ const style = {
 };
 
 const bar = {
-  display: "flex"
+  display: "flex",
+  flexDirection: "row",
 };
 
 const search = {
   float: "right",
-  display: "flex"
+  display: "flex",
+  marginLeft: "5%",
+  width: "100%",
 };
 
 const column = {
-  padding:"40px",
+  padding: "40px",
   textAlign: 'center',
-  // backgroundColor: 'red',
 };
+
+const resultResponsive = {
+  xs: { span: 24 },
+  sm: { span: 24 },
+  md: { span: 12 },
+  lg: { span: 8 },
+  xl: { span: 6 },
+};
+
+const filterResponsive = {
+  xs: { span: 24 },
+  sm: { span: 24 },
+  md: { span: 12 },
+  lg: { span: 8 },
+  xl: { span: 6 },
+};
+
 
 const StaffColumnGrid = () => {
   const [data, setData] = useState([]);
   const [selectedDropdownValue, setSelectedDropdownValue] = useState('');
   const [searchText, setSearchText] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [selectedRow, setSelectedRow] = useState(''); 
+  const [selectedRow, setSelectedRow] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -49,7 +68,7 @@ const StaffColumnGrid = () => {
   const handleDropdownChange = (selectedValue) => {
     setSelectedDropdownValue(selectedValue);
   };
-  
+
   const handleSearchTextChange = (value) => {
     setSearchText(value);
   };
@@ -75,9 +94,9 @@ const StaffColumnGrid = () => {
     }
     return true;
   });
-  
 
-  const itemsPerPage = 8; 
+
+  const itemsPerPage = 8;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const itemsToDisplay = filteredData.slice(startIndex, endIndex);
@@ -85,125 +104,131 @@ const StaffColumnGrid = () => {
 
   return (
     <>
-    <div style = {bar}>
-      <div style = {search}>
-        <div>
-          <DropdownStaff
-              selectedValue={selectedDropdownValue}
-              onDropdownChange={handleDropdownChange}
-              style = {{padding:"5px"}}
-            />
-        </div>
-        <div>
-          <DropdownDepartment
-            selectedValue={selectedDepartment}
-            onDepartmentChange={handleDepartmentChange}
-            style={{ padding: '5px' }}
-          />
-        </div>
-        <div>
-          <SearchbarStaff
-                searchText={searchText}
-
-                onSearchTextChange={handleSearchTextChange}
-                suffix={null} 
-                style = {{padding:"5px"}}
-          />
-        </div>
-      </div>
-      <div style = {{paddingLeft: "44%"}}>
-        <p>Number of Staff Displayed: {filteredData.length}</p>
-      </div>
-    </div>
-
-    <div style = {column}>
-        <Row gutter={[16, 24]}>
-          {itemsToDisplay.map((item, index) => (
-            <Col className="gutter-row" span={6} key={index} style={style} xs={24} sm={24} md={12} lg={8} xl={6}>
-
-              <div onClick={() => handleColumnClick(item)} className="gutter-row-content"  
-              style={{ backgroundColor: '#E9E9E9', padding:"10px", height: '100%' }}>
-                <img style = {{}} src={item.CropPic} alt={`${item.Name}'s`} />
-               
-                <div  style = {{ fontSize: '18.5px' }}>{item.Name}</div>
-                <div style = {{ fontSize: '15px', padding:"5px", fontStyle: 'italic'}}>{item.Position}</div>
-                <div>
-                  <a href={`mailto:${item.ContactInfo}`}>{item.ContactInfo}</a>
-                </div>
-
-              </div>
+      <div style={{ padding: '20px' }}>
+        <div style={bar} className='bar'>
+          <Row style={search}>
+            <Col {...filterResponsive} style={{ paddingBottom: "2%" }}>
+              <DropdownStaff
+                selectedValue={selectedDropdownValue}
+                onDropdownChange={handleDropdownChange}
+              />
             </Col>
-          ))}
-        </Row>
-    </div>
+            <Col {...filterResponsive} style={{ paddingBottom: "2%" }}>
+              <DropdownDepartment
+                selectedValue={selectedDepartment}
+                onDepartmentChange={handleDepartmentChange}
+              />
+            </Col>
+            <Col {...filterResponsive} style={{ paddingBottom: "2%" }}>
+              <SearchbarStaff
+                searchText={searchText}
+                onSearchTextChange={handleSearchTextChange}
+                suffix={null}
+              />
+            </Col>
 
-    <Pagination 
-    style = {{textAlign : "center"}}
-        current={currentPage}
-        total={filteredData.length}
-        pageSize={itemsPerPage}
-        onChange={handlePageChange}
-      />
+            <Col style={{ fontSize: "1.2em" }} {...filterResponsive}>
 
-      <Modal
-        title={selectedRow.Name}
-        open={!!selectedRow} 
-        onCancel={() => setSelectedRow('')} 
-        footer={null}
-        style={column}
-      >
-      {selectedRow && (
-      <>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <img
-          src={selectedRow.FullPic}
-          alt={`${selectedRow.Name}'s Image`}
-          style={{ padding: '20px' }}
+              <p>Number of Staff Displayed: {filteredData.length}</p>
+            </Col>
+          </Row>
+        </div>
+
+        <div style={column}>
+          <Row gutter={[20, 24]}>
+            {itemsToDisplay.length > 0 ? (
+              <>
+                {itemsToDisplay.map((item, index) => (
+                  <Col className="gutter-row" span={6} key={index} style={style} {...resultResponsive}>
+                    <div onClick={() => handleColumnClick(item)} className="gutter-row-content">
+                      <img style={{}} src={item.CropPic} alt={`${item.Name}'s`} />
+
+                      <div style={{ fontSize: '18.5px' }}>{item.Name}</div>
+                      <div style={{ fontSize: '15px', padding: "5px", fontStyle: 'italic' }}>{item.Position}</div>
+                      <div>
+                        <a href={`mailto:${item.ContactInfo}`}>{item.ContactInfo}</a>
+                      </div>
+
+                    </div>
+                  </Col>
+                ))}
+              </>
+            ) : (
+              <div style={{ textAlign: 'center', width: '100%' }}>
+                <Empty description={<span style={{fontSize: '1.2em'}}>No staffs found</span>} />
+              </div>
+            )}
+          </Row>
+        </div>
+
+        <Pagination
+          style={{ textAlign: "center" }}
+          current={currentPage}
+          total={filteredData.length}
+          pageSize={itemsPerPage}
+          onChange={handlePageChange}
         />
-      </div>
-      <div style={{ textAlign: "left", marginLeft: "20px" }}>
-        <div style={{ marginBottom: "10px" }}>
-          <strong>Degree Earned:</strong> {selectedRow.DegreesEarned}
-        </div>
-        <div style={{ marginBottom: "10px" }}>
-          <strong>Position:</strong> {selectedRow.Position}
-        </div>
-        {selectedRow.Designation && (
-          <div style={{ marginBottom: "10px" }}>
-            <strong>Designation:</strong> {selectedRow.Designation}
-          </div>
-        )}
-        {selectedRow.ResearchArea && (
-          <div style={{ marginBottom: "10px" }}>
-            <strong>Research Area:</strong> {selectedRow.ResearchArea}
-          </div>
-        )}
-        {selectedRow.AreaOfInterest && (
-          <div style={{ marginBottom: "10px" }}>
-            <strong>Area Of Interest:</strong> {selectedRow.AreaOfInterest}
-          </div>
-        )}
-        <div style={{ marginBottom: "10px" }}>
-          <strong>Email:</strong>{" "}
-          <a href={`mailto:${selectedRow.ContactInfo}`}>{selectedRow.ContactInfo}</a>
-        </div>
-        <div
-          style={{
-            padding: "20px",
-            textAlign: "center",
-            fontStyle: "italic",
-            fontWeight: "500",
-          }}
-        >
-          <div>"{selectedRow.Quote}"</div>
-        </div>
-      </div>
 
-    </>
-    
-        
-        )}
-      </Modal>
+        <Modal
+          title={selectedRow.Name}
+          open={!!selectedRow}
+          onCancel={() => setSelectedRow('')}
+          footer={null}
+          style={column}
+        >
+          {selectedRow && (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <img
+                  src={selectedRow.FullPic}
+                  alt={`${selectedRow.Name}'s Image`}
+                  style={{ padding: '20px' }}
+                />
+              </div>
+              <div style={{ textAlign: "left", marginLeft: "20px" }}>
+                <div style={{ marginBottom: "10px" }}>
+                  <strong>Degree Earned:</strong> {selectedRow.DegreesEarned}
+                </div>
+                <div style={{ marginBottom: "10px" }}>
+                  <strong>Position:</strong> {selectedRow.Position}
+                </div>
+                {selectedRow.Designation && (
+                  <div style={{ marginBottom: "10px" }}>
+                    <strong>Designation:</strong> {selectedRow.Designation}
+                  </div>
+                )}
+                {selectedRow.ResearchArea && (
+                  <div style={{ marginBottom: "10px" }}>
+                    <strong>Research Area:</strong> {selectedRow.ResearchArea}
+                  </div>
+                )}
+                {selectedRow.AreaOfInterest && (
+                  <div style={{ marginBottom: "10px" }}>
+                    <strong>Area Of Interest:</strong> {selectedRow.AreaOfInterest}
+                  </div>
+                )}
+                <div style={{ marginBottom: "10px" }}>
+                  <strong>Email:</strong>{" "}
+                  <a href={`mailto:${selectedRow.ContactInfo}`}>{selectedRow.ContactInfo}</a>
+                </div>
+                <div
+                  style={{
+                    padding: "20px",
+                    textAlign: "center",
+                    fontStyle: "italic",
+                    fontWeight: "500",
+                  }}
+                >
+                  <div>"{selectedRow.Quote}"</div>
+                </div>
+              </div>
+
+            </>
+
+
+          )}
+        </Modal>
+      </div>
     </>
   );
 };
