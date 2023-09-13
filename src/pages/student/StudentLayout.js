@@ -141,8 +141,8 @@ function PageLayout() {
 
     return (
         <>
-            <Layout style={{ marginLeft: '-8px', marginRight: '0px' }}>
-                <Header style={{ backgroundColor: 'white', paddingInline: '0px', height: '6.5em' }}>
+            <Layout>
+                <Header style={{ backgroundColor: 'white', height: '6.5em' }}>
                     <Navbar />
                 </Header>
                 <Content style={{ backgroundColor: 'white', padding: '20px' }}>
