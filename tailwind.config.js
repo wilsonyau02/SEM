@@ -7,6 +7,12 @@ module.exports = {
         '84': '21rem',
         '100': '25rem'
       },
+      spacing: {
+        '26': '6.5rem'
+      },
+      maxWidth: {
+        '14': '14rem'
+      },
     },
   },
   plugins: [],
