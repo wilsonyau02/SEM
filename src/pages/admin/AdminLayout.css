@@ -15,3 +15,14 @@
     margin-top: 7px !important;
 
 }
+
+.filter-button {
+    width: 90px !important;
+    background-color: #1668dc !important;
+    color: white !important;
+}
+
+.filter-button:hover {
+    background-color: #609ef5 !important;
+    color: white !important;
+}

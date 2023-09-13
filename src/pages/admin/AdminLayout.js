@@ -56,6 +56,14 @@ function AdminLayout() {
     }, [location.pathname]);
 
 
+    const iconStyle = {
+        width: '30px',
+        height: 'auto',
+        borderRadius: '50%',
+        marginRight: '10px',
+        padding: '5px',
+    }
+
     return <>
 
         <Layout className="adminLayout" >
@@ -105,17 +113,17 @@ function AdminLayout() {
                         },
                         {
                             key: '/admin',
-                            icon: <SiGoogleforms style={{ width: '25px', height: 'auto' }} />,
+                            icon: <SiGoogleforms style={{...iconStyle, backgroundColor: selectedKey === '/admin' ? '#d28900' : 'transparent'}} />,
                             label: 'Application',
                         },
                         {
                             key: '/admin/enquiry',
-                            icon: <MdQuestionAnswer style={{ width: '25px', height: 'auto' }} />,
+                            icon: <MdQuestionAnswer style={{...iconStyle, backgroundColor: selectedKey === '/admin/enquiry' ? '#d28900' : 'transparent'}} />,
                             label: 'Enquiry',
                         },
                         {
                             key: '/admin/activityLog',
-                            icon: <LuHistory style={{ width: '25px', height: 'auto' }} />,
+                            icon: <LuHistory style={{...iconStyle, backgroundColor: selectedKey === '/admin/activityLog' ? '#d28900' : 'transparent'}} />,
                             label: 'Activity Log',
                         },
                         {

@@ -33,11 +33,12 @@ function Login() {
 
         if (user && session) {
 
-            storeIPAddress("SIGNED_IN");
-
+            
             message.success('Login successful');
 
             if (user.user_metadata.userType === 'student') {
+                storeIPAddress("SIGNED_IN");
+
                 setTimeout(() => {
                     window.location.href = '/student';
                 }, 1000);

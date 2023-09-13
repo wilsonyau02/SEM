@@ -1,12 +1,6 @@
-### Before running the code, please install the following package
+### Before running the code, please install the packages
 1. open console
-2. type 'npm install' or 'npm i' followed by the packages below:
-    - react
-    - react-dom
-    - react-router-dom
-    - antd
-    - @supabase/supabase-js
-      for example, 'npm install react react-dom react-router-dom antd......"
+2. type 'npm install' or 'npm i' to install all the packages in the project.
 
 
 ### To run the code
@@ -21,7 +15,6 @@
 ### When create the table in supabase, remember:
 1. Disable Row Level Security (RLS) //If not cannot retrieve data from supabase.
 
-
-## To use ant design, can refer to the documentation:
+### To use ant design, can refer to the documentation:
 - https://ant.design/components/overview
 
