@@ -90,12 +90,13 @@ function PageLayout() {
                             src={logo}
                             alt="logo"
                             style={{
-                                height: '70px',
+                                height: '60px',
                                 display: 'flex',
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 marginLeft: '2em',
                                 marginTop: '1em',
+                                marginBottom: '1em',
                             }}
                         />
                     </Link>
