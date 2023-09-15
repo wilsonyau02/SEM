@@ -8,7 +8,7 @@ import {
 } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../../supabase-client';
+import { storeIPAddress, supabase } from '../../supabase-client';
 import { BiLogOutCircle } from 'react-icons/bi';
 import { SiGoogleforms } from 'react-icons/si';
 import { MdQuestionAnswer } from 'react-icons/md';
@@ -89,6 +89,7 @@ function AdminLayout() {
                     }}
                     onClick={async ({ key }) => {
                         if (key === '/logout') {
+                            storeIPAddress("SIGNED_OUT", "admin");
                             await supabase.auth.signOut();
                             localStorage.removeItem('selectedKey');
                             navigate('/');

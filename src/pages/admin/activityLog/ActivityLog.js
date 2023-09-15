@@ -100,25 +100,41 @@ function ActivityLog() {
 
   const fetchData = async () => {
     const { data, error } = await supabase.from("activity_log")
-        .select("*, student(*)")
-        .order("time", { ascending: false });
+        .select("*")
+        .order("time", { ascending: false })
+        .eq("userType", "student");
     if (error) console.log("error", error);
 
     console.log(data);
 
-    const tableData = data.map((item) => {
-        return {
-            key: item.id,
-            student_id: item.userID,
-            student_name: `${item.student.first_name} ${item.student.last_name}` ,
-            ip_address: item.ip_address,
-            event: item.event_name,
-            date: item.time,
-        };
-    });
+    const tableData = await Promise.all(data.map(async (item) => {
+      const studentName = await getStudentName(item.userID);
+  
+      return {
+        key: item.id,
+        student_id: item.userID,
+        student_name: studentName,
+        ip_address: item.ip_address,
+        event: item.event_name,
+        date: item.time,
+      };
+    }));
+  
 
     setData(tableData); 
     setLoading(false);
+  };
+
+  const getStudentName = async (studentID) => {
+    const { data, error } = await supabase
+      .from("student")
+      .select("*")
+      .eq("student_id", studentID)
+      .single();
+
+    if (error) console.log("error", error);
+
+    return `${data.first_name} ${data.last_name}`;
   };
 
   useEffect(() => {

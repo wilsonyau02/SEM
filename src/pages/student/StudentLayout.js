@@ -4,8 +4,7 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthProvider';
 import logo from '../../images/tarumtLogo.png';
 import './studentLayout.css';
-import { supabase } from '../../supabase-client';
-import { getCurrentDateTime } from '../../components/timeUtils';
+import { storeIPAddress } from '../../supabase-client';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -46,33 +45,9 @@ function PageLayout() {
     }
 
     const handleLogout = async () => {
-        await storeIPAddress("SIGNED_OUT");
+        storeIPAddress("SIGNED_OUT", "student");
         await signOut();
         navigate('/login');
-    }
-
-    async function storeIPAddress(event) {
-        try {
-            const userID = (await supabase.auth.getUser()).data.user.id;
-            const currentDateTime = getCurrentDateTime();
-            const response = await fetch("https://api.ipify.org?format=json");
-            const data = await response.json();
-            const ip = data.ip;
-
-            const { error } = await supabase.from("activity_log").insert([
-                {
-                    ip_address: ip,
-                    event_name: event,
-                    time: currentDateTime,
-                    userID: userID, // Assuming you want to associate this with a user
-                },
-            ]);
-            if (error) {
-                console.log("Error storing IP address:", error);
-            }
-        } catch (error) {
-            console.error("Error storing IP address:", error);
-        }
     }
 
 

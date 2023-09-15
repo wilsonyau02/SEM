@@ -18,11 +18,21 @@
 
 .filter-button {
     width: 90px !important;
-    background-color: #1668dc !important;
+    background-color: #eea500 !important;
     color: white !important;
 }
 
 .filter-button:hover {
-    background-color: #609ef5 !important;
+    background-color: #f5c148 !important;
+    color: white !important;
+}
+
+.ant-btn-primary {
+    background-color: #eea500 !important;
+    color: white !important;
+}
+
+.ant-btn-primary:hover {
+    background-color: #f5c148 !important;
     color: white !important;
 }

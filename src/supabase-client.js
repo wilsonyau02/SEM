@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { getCurrentDateTime } from "./components/timeUtils";
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseKey = process.env.REACT_APP_ANON_KEY;
@@ -79,5 +80,35 @@ export async function  fetchSupabaseData(table, selectedField, searchValue) {
   } catch (exception) {
     console.error('An error occurred:', exception.message);
     return [];
+  }
+}
+
+export async function storeIPAddress(event, userType) {
+  try {
+      const userID = (await supabase.auth.getUser()).data.user.id;
+
+      const currentDateTime = getCurrentDateTime();
+      console.log("userID", userID);
+      console.log("storeIPAddress", event);
+
+      const response = await fetch("https://api.ipify.org?format=json");
+      const data = await response.json();
+
+      const ip = data.ip;
+
+      const { error } = await supabase.from("activity_log").insert([
+          {
+              ip_address: ip,
+              event_name: event,
+              time: currentDateTime,
+              userID: userID, 
+              userType: userType,
+          },
+      ]);
+      if (error) {
+          console.log("Error storing IP address:", error);
+      }
+  } catch (error) {
+      console.error("Error storing IP address:", error);
   }
 }

@@ -147,23 +147,25 @@
 .bg-container.login {
   position: absolute;
   top: 0;
-  left: 50%;
+  right: 0%;
   width: 50%;
   height: 100%;
   overflow: hidden;
   transition: transform 0.6s ease-in-out;
   z-index: 100;
+  margin-right: 20px;
 }
 
 .bg-container.register {
   position: absolute;
   top: 0;
-  right: 50%;
+  left: 0%;
   width: 50%;
   height: 100%;
   overflow: hidden;
   transition: transform 0.6s ease-in-out;
   z-index: 100;
+  margin-left: 20px;
 }
 
 .bg-container.forgot-password {

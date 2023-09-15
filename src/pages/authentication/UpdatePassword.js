@@ -3,9 +3,8 @@ import { Form, Input, Button, Tooltip, Typography, message, Spin } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import updatePasswordBg from "../../images/updatePasswordBg.jpg";
 import { useMediaQuery } from "react-responsive";
-import { supabase } from "../../supabase-client";
+import { storeIPAddress, supabase } from "../../supabase-client";
 import { useAuth } from "../../context/AuthProvider";
-import { getCurrentDateTime } from "../../components/timeUtils";
 import NotFound from "../result/NotFound";
 
 
@@ -50,10 +49,6 @@ function UpdatePassword() {
         }
     }
 
-
-
-
-
     const onFinish = async (values) => {
         console.log("Received values of form: ", values);
 
@@ -62,10 +57,9 @@ function UpdatePassword() {
         if (error) {
             console.log(error);
         }
-
         if (data) {
 
-            await storeIPAddress("PASSWORD_UPDATED");
+            storeIPAddress("PASSWORD_UPDATED", "student");
 
             message.success('Password updated successfully');
 
@@ -74,31 +68,6 @@ function UpdatePassword() {
             }, 1000);
         }
     };
-
-    async function storeIPAddress(event) {
-        try {
-            const userID = (await supabase.auth.getUser()).data.user.id;
-            const currentDateTime = getCurrentDateTime();
-            const response = await fetch("https://api.ipify.org?format=json");
-            const data = await response.json();
-            const ip = data.ip;
-
-            const { error } = await supabase.from("activity_log").insert([
-                {
-                    ip_address: ip,
-                    event_name: event,
-                    time: currentDateTime,
-                    userID: userID, // Assuming you want to associate this with a user
-                },
-            ]);
-            if (error) {
-                console.log("Error storing IP address:", error);
-            }
-        } catch (error) {
-            console.error("Error storing IP address:", error);
-        }
-    }
-
 
     const onFinishFailed = (errorInfo) => {
         console.log("Failed:", errorInfo);
