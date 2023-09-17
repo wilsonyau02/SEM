@@ -260,6 +260,37 @@ function Application() {
     return e?.fileList;
   };
 
+
+  const additionalQuestions = {
+    spm: [
+      {
+        label: "Question 1 for SPM",
+        placeholder: "Answer for Question 1 for SPM",
+        validationMessage: "Please answer Question 1 for SPM",
+      },
+      {
+        label: "Question 2 for SPM",
+        placeholder: "Answer for Question 2 for SPM",
+        validationMessage: "Please answer Question 2 for SPM",
+      },
+      // Add more questions for SPM here
+    ],
+    stpm: [
+      {
+        label: "Question 1 for STPM",
+        placeholder: "Answer for Question 1 for STPM",
+        validationMessage: "Please answer Question 1 for STPM",
+      },
+      {
+        label: "Question 2 for STPM",
+        placeholder: "Answer for Question 2 for STPM",
+        validationMessage: "Please answer Question 2 for STPM",
+      },
+      // Add more questions for STPM here
+    ],
+    // Add more selected results and their corresponding questions here
+  };
+
   function FormContainer() {
     return (
       <Form
@@ -604,20 +635,25 @@ function Application() {
         <Title level={2}>QNA</Title>
 
         {selectedAcademicResult.map((selectedResult, index) => (
-        <Form.Item
-          key={index}
-          name={`qna${index}`} // Use a different name for each QNA input
-          label={`Additional Input for ${selectedResult}`}
-          rules={[
-            {
-              required: true,
-              message: `Please enter additional information for ${selectedResult}`,
-            },
-          ]}
-        >
-          <Input placeholder={`Additional information for ${selectedResult}`} />
-        </Form.Item>
-      ))}
+          additionalQuestions[selectedResult] && (
+            additionalQuestions[selectedResult].map((question, subIndex) => (
+              <Form.Item
+                key={index * 100 + subIndex} // Ensure a unique key
+                name={`${selectedResult.toLowerCase()}Input${subIndex}`}
+                label={question.label}
+                rules={[
+                  {
+                    required: true,
+                    message: question.validationMessage,
+                  },
+                ]}
+              >
+                <Input placeholder={question.placeholder} />
+              </Form.Item>
+            ))
+          )
+        ))}
+
 
         {/* {selectedAcademicResult === "spm" && (
           <Form.Item
