@@ -2,7 +2,6 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import Home from "./pages/student/home/Home";
 import Application from "./pages/student/application/Application";
 import AcademicianDirectory from "./pages/student/academician/AcademicianDirectory";
-import Help from "./pages/student/help/Help";
 import PageLayout from "./pages/student/StudentLayout";
 import Register from "./pages/authentication/Register";
 import Login from "./pages/authentication/Login";
@@ -12,9 +11,9 @@ import NotFound from "./pages/result/NotFound";
 import { useAuth } from "./context/AuthProvider";
 import ProcessApplication from "./pages/admin/application/ProcessApplication";
 import AdminLayout from "./pages/admin/AdminLayout";
-import Enquiry from "./pages/admin/enquiry/Enquiry";
+import AdminInquiry from "./pages/admin/adminInquiry/AdminInquiry";
 import ActivityLog from "./pages/admin/activityLog/ActivityLog";
-
+import StudentInquiry from "./pages/student/inquiry/StudentInquiry";
 
 function App() {
 
@@ -40,7 +39,7 @@ function App() {
               <Route path="home" element={<Home />} />
               <Route path="application" element={<Application />} />
               <Route path="academician" element={<AcademicianDirectory />} />
-              <Route path="help" element={<Help />} />
+              <Route path="studentInquiry" element={<StudentInquiry />} />
               <Route path="*" element={<NotFound backTo="student"/>} />
             </Route>
             <Route path="*" element={<NotFound backTo="student"/>} />
@@ -56,12 +55,10 @@ function App() {
             <Route path="/forgot-password" element={<Navigate to="/admin" />} />
             <Route path="/update-password" element={<Navigate to="/admin" />} />
 
-            
-
             <Route path="/admin/" element={<AdminLayout />}>
               <Route index element={<Home />} />
               <Route path="application" element={<ProcessApplication />} />
-              <Route path="enquiry" element={<Enquiry />} />
+              <Route path="adminInquiry" element={<AdminInquiry />} />
               <Route path="activityLog" element={<ActivityLog />} />
               <Route path="*" element={<NotFound backTo="admin"/>} />
             </Route>

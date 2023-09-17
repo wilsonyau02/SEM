@@ -42,8 +42,8 @@ function AdminLayout() {
             case '/admin':
                 setTitle('Application')
                 break;
-            case '/admin/enquiry':
-                setTitle("Student's Enquiry")
+            case '/admin/adminInquiry':
+                setTitle("Student's Inquiry")
                 break;
             case '/admin/activityLog':
                 setTitle("Student's Activity Log")
@@ -118,9 +118,9 @@ function AdminLayout() {
                             label: 'Application',
                         },
                         {
-                            key: '/admin/enquiry',
-                            icon: <MdQuestionAnswer style={{...iconStyle, backgroundColor: selectedKey === '/admin/enquiry' ? '#d28900' : 'transparent'}} />,
-                            label: 'Enquiry',
+                            key: '/admin/adminInquiry',
+                            icon: <MdQuestionAnswer style={{...iconStyle, backgroundColor: selectedKey === '/admin/adminInquiry' ? '#d28900' : 'transparent'}} />,
+                            label: 'Inquiry',
                         },
                         {
                             key: '/admin/activityLog',
