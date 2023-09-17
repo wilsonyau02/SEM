@@ -47,30 +47,30 @@ function Application() {
     console.log("Received values of form: ", values);
     //Insert data to supabase
 
-    try {
-      const { data, error } = await supabase.from("Application").insert([
-        {
-          name: values.name,
-          gender: values.gender,
-          phone_number: values.phone_number,
-          intake: values.intake,
-          programme_level: values.programme_level,
-          programme: values.programme,
-          // ic_photo_front: values.photo_ic_front,
-          // ic_photo_back: values.photo_ic_back,
-        },
-      ]);
-      if (error) {
-        // Handle any error that occurred during the insert operation
-        console.error("Error inserting data:", error);
-        // You can also throw the error to be caught by an outer try-catch block
-        throw error;
-      }
-    } catch (error) {
-      // Handle any error that occurred during the try block
-      console.error("An error occurred:", error);
-      // Handle error-specific actions or show user-friendly messages
-    }
+    // try {
+    //   const { data, error } = await supabase.from("Application").insert([
+    //     {
+    //       name: values.name,
+    //       gender: values.gender,
+    //       phone_number: values.phone_number,
+    //       intake: values.intake,
+    //       programme_level: values.programme_level,
+    //       programme: values.programme,
+    //       // ic_photo_front: values.photo_ic_front,
+    //       // ic_photo_back: values.photo_ic_back,
+    //     },
+    //   ]);
+    //   if (error) {
+    //     // Handle any error that occurred during the insert operation
+    //     console.error("Error inserting data:", error);
+    //     // You can also throw the error to be caught by an outer try-catch block
+    //     throw error;
+    //   }
+    // } catch (error) {
+    //   // Handle any error that occurred during the try block
+    //   console.error("An error occurred:", error);
+    //   // Handle error-specific actions or show user-friendly messages
+    // }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -212,7 +212,7 @@ function Application() {
   }, [selectedAcademicLevel]);
 
   //Prompt out questions
-  const [selectedAcademicResult, setSelectedAcademicResult] = useState([]); //Foundation,Degree,...
+  const [selectedAcademicResult, setSelectedAcademicResult] = useState([]);
 
   //Onchange Method
   // const handleAcademicResultChange = (value, fieldName) => {
@@ -225,29 +225,31 @@ function Application() {
   //   }));
   // };
 
-  // const handleAcademicResultChange = (value) => {
-  //   setSelectedAcademicResult(value);
-  // }
-
-  const handleAcademicResultChange = (value, index) => {
-    setSelectedAcademicResult((prevLevels) => {
-      const updatedLevels = [...prevLevels];
-      updatedLevels[index] = value;
-      return updatedLevels;
-    });
+  const handleAcademicResultChange = (value, key) => {
+    const updatedResults = [...selectedAcademicResult];
+    updatedResults[key] = value; // Store the selected academic result at the specified index
+    setSelectedAcademicResult(updatedResults);
   };
 
-  const addSelect = () => {
-    setSelectedAcademicResult((prevLevels) => [...prevLevels, null]);
-  };
+  // const handleAcademicResultChange = (value, index) => {
+  //   setSelectedAcademicResult((prevLevels) => {
+  //     const updatedLevels = [...prevLevels];
+  //     updatedLevels[index] = value;
+  //     return updatedLevels;
+  //   });
+  // };
 
-  const removeSelect = (index) => {
-    setSelectedAcademicResult((prevLevels) => {
-      const updatedLevels = [...prevLevels];
-      updatedLevels.splice(index, 1);
-      return updatedLevels;
-    });
-  };
+  // const addSelect = () => {
+  //   setSelectedAcademicResult((prevLevels) => [...prevLevels, null]);
+  // };
+
+  // const removeSelect = (index) => {
+  //   setSelectedAcademicResult((prevLevels) => {
+  //     const updatedLevels = [...prevLevels];
+  //     updatedLevels.splice(index, 1);
+  //     return updatedLevels;
+  //   });
+  // };
 
   //Get Image files
   const normFile = (e) => {
@@ -308,13 +310,13 @@ function Application() {
         >
           <Select
             size="large"
-            defaultValue="Please select your gender"
             style={{ width: 250 }}
             options={[
               { value: "male", label: "Male" },
               { value: "female", label: "Female" },
               { value: "not_prefer_to_say", label: "Not Prefer to say" },
             ]}
+            placeholder="Please select your gender"
           />
         </Form.Item>
 
@@ -366,7 +368,7 @@ function Application() {
         >
           <Select
             size="large"
-            defaultValue="Please select your intake"
+            placeholder="Please select your intake"
             style={{ width: 250 }}
             showSearch
             filterOption={
@@ -405,7 +407,7 @@ function Application() {
         >
           <Select
             size="large"
-            defaultValue="Please select your programme level"
+            placeholder="Please select your programme level"
             style={{ width: 300 }}
             showSearch
             filterOption={
@@ -442,7 +444,7 @@ function Application() {
         >
           <Select
             size="large"
-            defaultValue={"Please select your programme."}
+            placeholder={"Please select your programme."}
             style={{ width: 700 }}
             showSearch
             filterOption={
@@ -565,14 +567,8 @@ function Application() {
                           label: "Other Institutes of Higher Learning",
                         },
                       ]}
-                      // onChange={(value)=> handleAcademicResultChange(value,key)}
-                      value={selectedAcademicResult}
-                      onChange={handleAcademicResultChange}
-                      // onChange={
-                      //   // setSelectedAcademicResult(value);
-
-                      //   // handleAcademicResultChange(value,name)
-                      // }
+                      value={selectedAcademicResult[key]}
+                      onChange={(value) => handleAcademicResultChange(value, key)} // Call the handler to update selectedAcademicResult
                     />
                   </Form.Item>
                   <Form.Item
@@ -607,7 +603,23 @@ function Application() {
 
         <Title level={2}>QNA</Title>
 
-        {selectedAcademicResult === "spm" && (
+        {selectedAcademicResult.map((selectedResult, index) => (
+        <Form.Item
+          key={index}
+          name={`qna${index}`} // Use a different name for each QNA input
+          label={`Additional Input for ${selectedResult}`}
+          rules={[
+            {
+              required: true,
+              message: `Please enter additional information for ${selectedResult}`,
+            },
+          ]}
+        >
+          <Input placeholder={`Additional information for ${selectedResult}`} />
+        </Form.Item>
+      ))}
+
+        {/* {selectedAcademicResult === "spm" && (
           <Form.Item
             name="spmInput"
             label="Additional Input for SPM"
@@ -636,7 +648,7 @@ function Application() {
           >
             <Input placeholder="Additional information for STPM" />
           </Form.Item>
-        )}
+        )} */}
 
         <Button
           type="primary"
