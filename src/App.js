@@ -14,6 +14,8 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import AdminInquiry from "./pages/admin/adminInquiry/AdminInquiry";
 import ActivityLog from "./pages/admin/activityLog/ActivityLog";
 import StudentInquiry from "./pages/student/inquiry/StudentInquiry";
+import CreateApplication from "./pages/student/application/CreateApplication";
+import ProgramDetails from "./pages/student/home/ProgramDetails";
 
 function App() {
 
@@ -37,7 +39,9 @@ function App() {
             <Route path="/student/" element={<PageLayout />}>
               <Route index element={<Home />} />
               <Route path="home" element={<Home />} />
+              <Route path="programDetails" element={<ProgramDetails />} />
               <Route path="application" element={<Application />} />
+              <Route path="application/new" element={<CreateApplication />} />
               <Route path="academician" element={<AcademicianDirectory />} />
               <Route path="studentInquiry" element={<StudentInquiry />} />
               <Route path="*" element={<NotFound backTo="student"/>} />

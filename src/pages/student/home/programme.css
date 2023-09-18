@@ -1,0 +1,8 @@
+/* styles.css or another CSS/SCSS file */
+.custom-header {
+    /* font-size: 15px; */
+    font-weight: bold;
+    margin: 0;
+    /* display: flex;           Add flex display */
+    /* align-items: center;     Vertically center the text with the arrow */
+}

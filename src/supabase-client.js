@@ -58,6 +58,47 @@ export async function fetchDropdownOptionsDepartment() {
   }
 }
 
+// Function to fetch data for the dedicated program
+export async function fetchProgramData(progLvl) {
+  try {
+    const { data, error } = await supabase
+      .from('Programme')  // Replace 'yourTableName' with the name of your table in Supabase
+      .select('*')
+      .eq('progLvl', progLvl); // Filter by the program level
+    
+    if (error) {
+      console.error('Error fetching program data:', error.message);
+      return [];
+    } else {
+      return data;  // Return the fetched program details
+    }
+  } catch (exception) {
+    console.error('An error occurred:', exception.message);
+    return [];
+  }
+}
+
+// Function to fetch data for whole Programme table
+export async function fetchProgrammeData() {
+  try {
+    const { data, error } = await supabase
+      .from('Programme')  // Replace 'yourTableName' with the name of your table in Supabase
+      .select('*');
+    
+    if (error) {
+      console.error('Error fetching programme data:', error.message);
+      return [];
+    } else {
+      return data;  // Return the fetched programme details
+    }
+  } catch (exception) {
+    console.error('An error occurred:', exception.message);
+    return [];
+  }
+}
+
+
+
 // Function to display staffs from Supabase (academician)
 export async function fetchSupabaseData(table, selectedField, searchValue) {
   try {
