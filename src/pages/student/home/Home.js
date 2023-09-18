@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchProgramData, fetchProgrammeData } from '../../../supabase-client';
-import { Button, Modal, Checkbox } from 'antd';
+import { Button, Modal, Checkbox, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 import ProgramSelector from "./ProgramSelector";
 import ProgramDetails from "./ProgramDetails";
@@ -8,6 +9,15 @@ import ProgramSelectList from './ProgramSelectList';
 import SearchbarProgram from './SearchbarProgram';
 import ComparisonModal from './ComparisonModal';
 import CompareResultsModal from './CompareResultsModal';
+
+const antIcon = (
+    <LoadingOutlined
+        style={{
+            fontSize: 24,
+        }}
+        spin
+    />
+);
 
 const Home = () => {
     const [programmeData, setProgrammeData] = useState([]);
@@ -18,11 +28,17 @@ const Home = () => {
     const [compareModalVisible, setCompareModalVisible] = useState(false); // just a placeholder, you might already have a state management for this
     const [isResultsModalVisible, setIsResultsModalVisible] = useState(false);
 
-    const onChange = (checkedValues) => {
-        setselectedCourses(checkedValues);
-    };
+    const [isLoading, setIsLoading] = useState(false);
 
-    const maxChecked = selectedCourses.length >= 3;
+    const handleProgramSelect = async (program, index) => {
+        setProgramName(program);
+        setProgramIndex(index ?? null);
+        setIsLoading(true);
+
+        const courses = await fetchProgramData(program);
+        setSelectedProgramCourses(courses);
+        setIsLoading(false);
+    };
 
     useEffect(() => {
         async function fetchData() {
@@ -33,14 +49,6 @@ const Home = () => {
     }, []);
 
 
-    const handleProgramSelect = async (program, index) => {
-        setProgramName(program);
-        setProgramIndex(index ?? null);
-        setSelectedProgramCourses(null);
-
-        const courses = await fetchProgramData(program);
-        setSelectedProgramCourses(courses);
-    };
 
     const handleCompare = () => {
         setIsResultsModalVisible(true);  // Show CompareResultsModal
@@ -49,18 +57,24 @@ const Home = () => {
 
     return (
         <div>
-            {selectedProgramCourses ? (
+            {isLoading ? (
+                // Display a loading spinner or any other loading UI
+                <div>
+                    
+                </div>
+
+            ) : selectedProgramCourses ? (
                 <div style={{ display: 'flex', width: '100%' }}>
                     <div style={{ width: '75%', marginLeft: '50px' }}>
                         <div
-                        style={{
-                            marginTop: '20px',
-                            marginBottom: '30px',
-                            marginRight: '50px',
-                            display: 'flex',
-                            // Make the items seperate
-                            justifyContent: 'space-between',
-                        }}>
+                            style={{
+                                marginTop: '20px',
+                                marginBottom: '30px',
+                                marginRight: '50px',
+                                display: 'flex',
+                                // Make the items seperate
+                                justifyContent: 'space-between',
+                            }}>
                             <ProgramSelectList onProgramChange={handleProgramSelect} />
                             <SearchbarProgram onProgramChange={handleProgramSelect} />
                         </div>

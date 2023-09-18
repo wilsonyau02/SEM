@@ -1,20 +1,31 @@
-import { Modal, Table, Image } from 'antd';
+import { Modal, Table, Image, Button } from 'antd';
 
 const CompareResultsModal = ({ isVisible, onClose, selectedCourses }) => {
 
-    const columns = [
-        {
-            title: 'Criteria',
-            dataIndex: 'criteria',
-            key: 'criteria',
-            render: text => <strong>{text}</strong>,
-        },
-        ...selectedCourses.map(course => ({
-            title: course.progName,
-            dataIndex: course.progId,
-            key: course.progId,
-        }))
-    ];
+    const criteriaWidth = 10; // in percentage
+
+    const remainingWidth = 100 - criteriaWidth; // 80% if criteriaWidth is 20%
+const otherColumns = selectedCourses.length;
+const columnWidth = remainingWidth / otherColumns; // Percentage width for each of the other columns
+
+
+const columns = [
+    {
+        title: 'Criteria',
+        dataIndex: 'criteria',
+        key: 'criteria',
+        width: `${criteriaWidth}%`,
+        render: text => <strong>{text}</strong>,
+    },
+    ...selectedCourses.map(course => ({
+        title: course.progName,
+        dataIndex: course.progId,
+        key: course.progId,
+        width: `${columnWidth}%`
+    }))
+];
+
+
 
     const data = [
         { criteria: 'Program Level', ...generateRowData('progLvl') },
@@ -120,14 +131,20 @@ const CompareResultsModal = ({ isVisible, onClose, selectedCourses }) => {
 
     return (
         <Modal
-            width="90%"  // Optional: Adjust the modal width to fit your table better.
+            width="90%"
             visible={isVisible}
             onCancel={onClose}
-            title="Course Comparison"  // Optional: Add a title to your modal.
+            title="Course Comparison"
+            footer={[
+                <Button key="close" onClick={onClose}>
+                    Close
+                </Button>
+            ]}
         >
             <Table columns={columns} dataSource={data} pagination={false} />
         </Modal>
     );
+    
 }
 
 export default CompareResultsModal;
