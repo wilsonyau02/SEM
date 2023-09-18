@@ -20,13 +20,13 @@ import {
   DownloadOutlined,
 } from "@ant-design/icons";
 import { useState, useMemo } from "react";
-// import {
-//   getCities,
-//   getPostcodes,
-//   getStates,
-//   allPostcodes,
-//   findPostcode,
-// } from "malaysia-postcodes";
+import {
+  getCities,
+  getPostcodes,
+  getStates,
+  allPostcodes,
+  findPostcode,
+} from "malaysia-postcodes";
 import { supabase } from "../../../supabase-client";
 
 const { Title } = Typography;
@@ -43,41 +43,160 @@ const formItemLayout = {
 function Application() {
   const [form] = Form.useForm();
 
+  const determinePassOrFail = (value) => {
+    let passed = false;
+
+    if (value === "Y" || value === "y") {
+      passed = true;
+    }
+
+    return passed;
+  };
+
   const onFinish = async (values) => {
     console.log("Received values of form: ", values);
+    //Valid whether it is approve or reject
+
+    // if(values.stpmInput0 == null){
+    //   console.log("THIS IS NULL")
+    // }
+
+    var status = null;
+    var spmStatus = null;
+    var stpmStatus = null;
+    var alevelStatus = null;
+    var uecStatus = null;
+    var diplomaStatus = null;
+    var otherStatus = null;
+
+    if (values.spmInput0 != null) {
+      spmStatus = determinePassOrFail(values.spmInput0);
+    }
+
+    if (values.stpmInput0 != null) {
+      stpmStatus = determinePassOrFail(values.stpmInput0);
+    }
+
+    if (values.alevelInput0 != null) {
+      alevelStatus = determinePassOrFail(values.alevelInput0);
+    }
+
+    if (values.uecInput0 != null) {
+      uecStatus = determinePassOrFail(values.uecInput0);
+    }
+
+    if (values.diplomaInput0 != null) {
+      const floatValue = parseFloat(values.diplomaInput0);
+      if (floatValue > 2.5) {
+        diplomaStatus = true;
+      } else {
+        diplomaStatus = false;
+      }
+    }
+
+    if (values.otherInput0 != null) {
+      const floatValue = parseFloat(values.otherInput0);
+      if (floatValue > 2.5) {
+        otherStatus = true;
+      } else {
+        otherStatus = false;
+      }
+    }
+
+    console.log("SPM: " + spmStatus);
+    console.log("STPM: " + stpmStatus);
+    console.log("A-Level: " + alevelStatus);
+    console.log("UEC: " + uecStatus);
+    console.log("Diploma: " + diplomaStatus);
+    console.log("Other: " + otherStatus);
+
+    if (
+      spmStatus === false ||
+      stpmStatus === false ||
+      alevelStatus === false ||
+      uecStatus === false ||
+      diplomaStatus === false ||
+      otherStatus === false
+    ) {
+      status = false;
+    } else {
+      status = true;
+    }
+    console.log("STATUS" + status);
+
     //Insert data to supabase
 
-    // try {
-    //   const { data, error } = await supabase.from("Application").insert([
-    //     {
-    //       name: values.name,
-    //       gender: values.gender,
-    //       phone_number: values.phone_number,
-    //       intake: values.intake,
-    //       programme_level: values.programme_level,
-    //       programme: values.programme,
-    //       // ic_photo_front: values.photo_ic_front,
-    //       // ic_photo_back: values.photo_ic_back,
-    //     },
-    //   ]);
-    //   if (error) {
-    //     // Handle any error that occurred during the insert operation
-    //     console.error("Error inserting data:", error);
-    //     // You can also throw the error to be caught by an outer try-catch block
-    //     throw error;
-    //   }
-    // } catch (error) {
-    //   // Handle any error that occurred during the try block
-    //   console.error("An error occurred:", error);
-    //   // Handle error-specific actions or show user-friendly messages
-    // }
+    try {
+      const { data, error } = await supabase.from("Application").insert([
+        {
+          name: values.name,
+          identity_number: values.identity_number,
+          gender: values.gender,
+          phone_number: values.phone_number,
+          intake: values.intake,
+          programme_level: values.programme_level,
+          programme: values.programme,
+          status: status
+          // ic_photo_front: values.photo_ic_front,
+          // ic_photo_back: values.photo_ic_back,
+        },
+      ]);
+      if (error) {
+        // Handle any error that occurred during the insert operation
+        console.error("Error inserting data:", error);
+        // You can also throw the error to be caught by an outer try-catch block
+        throw error;
+      }
+    } catch (error) {
+      // Handle any error that occurred during the try block
+      console.error("An error occurred:", error);
+      // Handle error-specific actions or show user-friendly messages
+    }
+    alert("You have submit an application form.")
+
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Application submit Failed:", errorInfo);
   };
 
+  //Handle Malaysian and non Malaysian
+  const [isMalaysian, setIsMalaysian] = useState(true); //variable,Function //useState(Initial value)
+
+  const handleCheckMalaysian = () => {
+    setIsMalaysian(!isMalaysian);
+  };
+
+  //Handle Address
+  const [postcodeValue, setPostcodeValue] = useState("");
+
+  // Function to handle input changes
+  const handlePostcodeChange = (e) => {
+    const value = e.target.value;
+
+    // if(value.length === 5){
+    setPostcodeValue(value);
+    // }
+  };
+
+  const locationExact = findPostcode(postcodeValue);
+
+  console.log(locationExact);
+
   //Validation rules
+  const icValidator = (rule, value) => {
+    return new Promise((resolve, reject) => {
+      const icRegex = /^\d{6}-\d{2}-\d{4}$/;
+
+      if (value) {
+        if (!icRegex.test(value)) {
+          reject("Please enter a valid Ic number. Format: 021205-10-0612");
+        }
+      } else {
+        reject();
+      }
+    });
+  };
   const phoneNumberValidator = (rule, value) => {
     return new Promise((resolve, reject) => {
       const digitRegex = /^[0-9]*$/; // Only allow numbers (0-9)
@@ -87,7 +206,9 @@ function Application() {
         if (!digitRegex.test(value)) {
           reject("Please enter digits only for the phone number.");
         } else if (!phoneNumberRegex.test(value)) {
-          reject("Please enter a valid Malaysian phone number.");
+          reject(
+            "Please enter a valid Malaysian phone number. Format: 011-2822 7757"
+          );
         } else {
           resolve();
         }
@@ -260,35 +381,70 @@ function Application() {
     return e?.fileList;
   };
 
-
   const additionalQuestions = {
     spm: [
       {
-        label: "Question 1 for SPM",
-        placeholder: "Answer for Question 1 for SPM",
-        validationMessage: "Please answer Question 1 for SPM",
-      },
-      {
-        label: "Question 2 for SPM",
-        placeholder: "Answer for Question 2 for SPM",
-        validationMessage: "Please answer Question 2 for SPM",
+        label:
+          "Q)  Did you receive a grade of C for Additional Mathematics and English in your SPM examination? ",
+        placeholder: "Y or N",
+        validationMessage:
+          "Please complete the question related to SPM; Don't leave it blank",
       },
       // Add more questions for SPM here
     ],
     stpm: [
       {
-        label: "Question 1 for STPM",
-        placeholder: "Answer for Question 1 for STPM",
-        validationMessage: "Please answer Question 1 for STPM",
-      },
-      {
-        label: "Question 2 for STPM",
-        placeholder: "Answer for Question 2 for STPM",
-        validationMessage: "Please answer Question 2 for STPM",
+        label:
+          "Q) Did you receive a grade of C for Mathematics in your STPM examination? ",
+        placeholder: "Y or N",
+        validationMessage:
+          "Please complete the question related to STPM; Don't leave it blank",
       },
       // Add more questions for STPM here
     ],
     // Add more selected results and their corresponding questions here
+    alevel: [
+      {
+        label:
+          "Q) Did you receive a grade of D for 2 relevant subjects, such as Mathematics, ICT, English, etc., at A-levels?",
+        placeholder: "Y or N",
+        validationMessage:
+          "Please complete the question related to A Level; Don't leave it blank",
+      },
+    ],
+    uec: [
+      {
+        label:
+          "Q) Did you receive a grade of B for 5 Relevant subjects,such as Mathematic and ICT, English, etc., at UEC?",
+        placeholder: "Y or N",
+        validationMessage:
+          "Please complete the question related to UEC; Don't leave it blanks",
+      },
+    ],
+    foundation: [
+      {
+        label: "Q) What is your CGPA for your TARUMT Foundation? ",
+        placeholder: "Please provide your response.",
+        validationMessage:
+          "Please complete the question related to TARUMT Foundation; Don't leave it blanks",
+      },
+    ],
+    diploma: [
+      {
+        label: "Q) What is your CGPA for your TARUMT diploma? ",
+        placeholder: "Please provide your response.",
+        validationMessage:
+          "Please complete the question related to TARUMT Diploma; Don't leave it blanks",
+      },
+    ],
+    other: [
+      {
+        label: "Q) What is your CGPA for other Institutes of Higher Learning? ",
+        placeholder: "Please provide your response.",
+        validationMessage:
+          "Please complete the question related to other institutes of Higher Learning; Don't leave it blanks",
+      },
+    ],
   };
 
   function FormContainer() {
@@ -327,6 +483,57 @@ function Application() {
             prefix={<UserOutlined />}
           />
         </Form.Item>
+
+        <Form.Item name="malaysian" valuePropName="checked" noStyle>
+          <Checkbox onChange={handleCheckMalaysian}>not a malaysian? </Checkbox>
+        </Form.Item>
+
+        {isMalaysian ? (
+          <Form.Item
+            name="identity_number"
+            label="Identity Number"
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: "Please don't leave blank on identity number field.",
+              },
+              {
+                validator: icValidator,
+              },
+            ]}
+          >
+            <Input
+              placeholder="020228-10-1234"
+              size="large"
+              type="text"
+              allowClear="true"
+              maxLength="14"
+              prefix={<VerifiedOutlined />}
+            />
+          </Form.Item>
+        ) : (
+          <Form.Item
+            name="identity_number"
+            label="Passport Number"
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: "Please don't leave blank on passport field.",
+              },
+            ]}
+          >
+            <Input
+              placeholder=""
+              size="large"
+              type="text"
+              allowClear="true"
+              maxLength="100"
+              prefix={<VerifiedOutlined />}
+            />
+          </Form.Item>
+        )}
 
         <Form.Item
           name="gender"
@@ -379,6 +586,46 @@ function Application() {
             prefix={<PhoneOutlined />}
           />
         </Form.Item>
+
+        <Form.Item
+          name={["address", "line1"]}
+          label="Address (No need include city,State,postcode)"
+          hasFeedback
+          rules={[
+            {
+              required: true,
+              message: "Please don't leave blank on address Line 1.",
+            },
+          ]}
+        >
+          <Input.TextArea
+            placeholder="Enter the full address"
+            autoSize={{ minRows: 2, maxRows: 6 }}
+            allowClear={true}
+            prefix={<HomeOutlined />}
+          />
+        </Form.Item>
+
+        <Form.Item>
+          <Input
+            placeholder="Postcode"
+            size="large"
+            type="text"
+            allowClear="true"
+            style={{ width: 250 }}
+            prefix={<HomeOutlined />}
+            maxLength="5"
+            // value={postcodeValue}
+            // onChange={handlePostcodeChange}
+          />
+        </Form.Item>
+
+        {/*
+          <br></br>
+
+           */}
+
+        {/* Selangor->Kajang-> 43000 */}
 
         <Title level={2}>Academic Programme </Title>
         <Form.Item
@@ -599,7 +846,9 @@ function Application() {
                         },
                       ]}
                       value={selectedAcademicResult[key]}
-                      onChange={(value) => handleAcademicResultChange(value, key)} // Call the handler to update selectedAcademicResult
+                      onChange={(value) =>
+                        handleAcademicResultChange(value, key)
+                      } // Call the handler to update selectedAcademicResult
                     />
                   </Form.Item>
                   <Form.Item
@@ -609,13 +858,19 @@ function Application() {
                     valuePropName="fileList"
                     getValueFromEvent={normFile}
                     extra="PDF or Image are acceptable"
-                    rules={[{ required: true, message: "Missing last name" }]}
+                    rules={[{ required: true, message: "Missing Document" }]}
                   >
                     <Upload name="logo" action="/upload.do" listType="picture">
                       <Button icon={<UploadOutlined />}>Click to upload</Button>
                     </Upload>
                   </Form.Item>
-                  <MinusCircleOutlined onClick={() => remove(name)} />
+                  <MinusCircleOutlined
+                    onClick={() => {
+                      remove(name);
+                      handleAcademicResultChange(null, key);
+                      // setSelectedAcademicResult([])
+                    }}
+                  />
                 </Space>
               ))}
               <Form.Item>
@@ -634,8 +889,9 @@ function Application() {
 
         <Title level={2}>QNA</Title>
 
-        {selectedAcademicResult.map((selectedResult, index) => (
-          additionalQuestions[selectedResult] && (
+        {selectedAcademicResult.map(
+          (selectedResult, index) =>
+            additionalQuestions[selectedResult] &&
             additionalQuestions[selectedResult].map((question, subIndex) => (
               <Form.Item
                 key={index * 100 + subIndex} // Ensure a unique key
@@ -651,9 +907,7 @@ function Application() {
                 <Input placeholder={question.placeholder} />
               </Form.Item>
             ))
-          )
-        ))}
-
+        )}
 
         {/* {selectedAcademicResult === "spm" && (
           <Form.Item
