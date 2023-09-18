@@ -197,6 +197,7 @@ function Application() {
       }
     });
   };
+
   const phoneNumberValidator = (rule, value) => {
     return new Promise((resolve, reject) => {
       const digitRegex = /^[0-9]*$/; // Only allow numbers (0-9)
@@ -215,6 +216,32 @@ function Application() {
       } else {
         reject();
       }
+    });
+  };
+  
+  const cgpaValidator = (rule, value) => {
+    return new Promise((resolve, reject) => {
+      if(value){
+        const cgpa = parseFloat(value);
+        if (!isNaN(cgpa) && cgpa >= 0 && cgpa <= 4) {
+          resolve(); // Valid CGPA within the range 0-4
+        } else {
+          reject('Please enter a valid CGPA between 0.0 and 4.0');
+        }
+      }
+    });
+  };
+
+  const ynValidator = (rule, value) => {
+    return new Promise((resolve, reject) => {
+      if(value){
+        if (value === 'Y' || value === 'N' || value === 'y' || value === 'n' ) {
+          resolve(); // Valid input, either 'Y' or 'N'
+        } else {
+          reject('Please enter either "Y" or "N"');
+        }
+      }
+    
     });
   };
 
@@ -389,6 +416,9 @@ function Application() {
         placeholder: "Y or N",
         validationMessage:
           "Please complete the question related to SPM; Don't leave it blank",
+          maxLength: 1,
+          type: "text",
+          validator: ynValidator
       },
       // Add more questions for SPM here
     ],
@@ -399,6 +429,9 @@ function Application() {
         placeholder: "Y or N",
         validationMessage:
           "Please complete the question related to STPM; Don't leave it blank",
+          maxLength: 1,
+          type: "text",
+          validator: ynValidator
       },
       // Add more questions for STPM here
     ],
@@ -410,6 +443,9 @@ function Application() {
         placeholder: "Y or N",
         validationMessage:
           "Please complete the question related to A Level; Don't leave it blank",
+          maxLength: 1,
+          type: "text",
+          validator: ynValidator
       },
     ],
     uec: [
@@ -419,30 +455,42 @@ function Application() {
         placeholder: "Y or N",
         validationMessage:
           "Please complete the question related to UEC; Don't leave it blanks",
+          maxLength: 1,
+          type: "text",
+          validator: ynValidator
       },
     ],
     foundation: [
       {
         label: "Q) What is your CGPA for your TARUMT Foundation? ",
-        placeholder: "Please provide your response.",
+        placeholder: "Please provide your response. (Sample Format: 3.5)",
         validationMessage:
           "Please complete the question related to TARUMT Foundation; Don't leave it blanks",
+          maxLength: 3,
+          type: "number",
+          validator: cgpaValidator
       },
     ],
     diploma: [
       {
         label: "Q) What is your CGPA for your TARUMT diploma? ",
-        placeholder: "Please provide your response.",
+        placeholder: "Please provide your response. (Sample Format: 3.5)",
         validationMessage:
           "Please complete the question related to TARUMT Diploma; Don't leave it blanks",
+          maxLength: 3,
+          type: "number",
+          validator: cgpaValidator
       },
     ],
     other: [
       {
         label: "Q) What is your CGPA for other Institutes of Higher Learning? ",
-        placeholder: "Please provide your response.",
+        placeholder: "Please provide your response. (Sample Format: 3.5)",
         validationMessage:
           "Please complete the question related to other institutes of Higher Learning; Don't leave it blanks",
+          maxLength: 3,
+          type: "number",
+          validator: cgpaValidator
       },
     ],
   };
@@ -902,9 +950,12 @@ function Application() {
                     required: true,
                     message: question.validationMessage,
                   },
+                  {
+                    validator: question.validator
+                  }
                 ]}
               >
-                <Input placeholder={question.placeholder} />
+                <Input placeholder={question.placeholder} maxLength={question.maxLength} type={question.type}/>
               </Form.Item>
             ))
         )}
