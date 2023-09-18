@@ -14,6 +14,7 @@ import {
     InputNumber,
     Modal,
     message,
+    Space
 } from "antd";
 import {
     UserOutlined,
@@ -24,11 +25,16 @@ import {
     PlusOutlined,
     UploadOutlined,
     InboxOutlined,
+    DeleteOutlined
 } from "@ant-design/icons";
 import { useState, useMemo } from "react";
 import { supabase } from "../../../supabase-client";
+import { useNavigate } from "react-router-dom";
+import { getCurrentDateTime } from "../../../components/timeUtils";
+
 
 const { Title } = Typography;
+const { Option } = Select;
 
 const formItemLayout = {
     labelCol: {
@@ -41,135 +47,184 @@ const formItemLayout = {
 
 function CreateApplication() {
 
-
-    const determinePassOrFail = (value) => {
-        let passed = false;
-
-        if (value === "Yes") {
-            passed = true;
-        }
-
-        return passed;
-    };
+    const navigate = useNavigate();
 
     const onFinish = async (values) => {
         console.log("Received values of form: ", values);
 
-        // Check if all academic questions have "Yes" answers
-        const allQuestionsPass = selectedAcademicResults.every((result) => {
-            return academicResultQuestions[result].every((question, index) => {
-                const name = `qna-${result}-${index}`;
-                const value = values[name];
-                return value === "Yes";
-            });
+        console.log(academicSections)
+
+        let isFormValid = true;
+        let status = false;
+
+        // Iterate through academicSections to check each section's validation
+        academicSections.forEach((section) => {
+            const { level, answers } = section;
+            const questions = academicResultQuestions[level];
+
+            if (!questions) {
+                // If questions for this section are not defined, skip validation
+                return;
+            }
+
+            // Check if all answers are "Yes"
+            const allYes = questions.every((question) =>
+                question.type === 'select' ? answers[question.label] === 'Yes' : true
+            );
+
+            // Check if CGPA is higher than 2.5 (if applicable)
+            const cgpaQuestion = questions.find(
+                (question) => question.label && question.label.startsWith('What is your CGPA')
+            );
+
+            if (cgpaQuestion) {
+                const cgpa = parseFloat(answers[cgpaQuestion.label]);
+
+                if (isNaN(cgpa) || cgpa <= 2.5) {
+                    // If CGPA is not a valid number or lower than 2.5, set formStatus to "Fail"
+                    isFormValid = false;
+                }
+            }
+
+            if (!allYes) {
+                // If any section fails the validation, set formStatus to "Fail"
+                isFormValid = false;
+            }
         });
 
-        // Check if the CGPA for diploma and other is higher than 2.5
-        const diplomaCGPA = parseFloat(values.diplomaInput0);
-        const otherCGPA = parseFloat(values.otherInput0);
-        const cgpaPass = !isNaN(diplomaCGPA) && !isNaN(otherCGPA) && diplomaCGPA > 2.5 && otherCGPA > 2.5;
-
-        // Determine the status based on conditions
-        const status1 = allQuestionsPass && cgpaPass;
-
-        console.log("STATUS:", status1);
-
-
-
-        var status = null;
-        var spmStatus = null;
-        var stpmStatus = null;
-        var alevelStatus = null;
-        var uecStatus = null;
-        var diplomaStatus = null;
-        var otherStatus = null;
-
-
-        if (values.spmInput0 != null) {
-            spmStatus = determinePassOrFail(values.spmInput0);
-        }
-
-        if (values.stpmInput0 != null) {
-            stpmStatus = determinePassOrFail(values.stpmInput0);
-        }
-
-        if (values.alevelInput0 != null) {
-            alevelStatus = determinePassOrFail(values.alevelInput0);
-        }
-
-        if (values.uecInput0 != null) {
-            uecStatus = determinePassOrFail(values.uecInput0);
-        }
-
-        if (values.diplomaInput0 != null) {
-            const floatValue = parseFloat(values.diplomaInput0);
-            if (floatValue > 2.5) {
-                diplomaStatus = true;
-            } else {
-                diplomaStatus = false;
-            }
-        }
-
-        if (values.otherInput0 != null) {
-            const floatValue = parseFloat(values.otherInput0);
-            if (floatValue > 2.5) {
-                otherStatus = true;
-            } else {
-                otherStatus = false;
-            }
-        }
-
-        console.log("SPM: " + spmStatus);
-        console.log("STPM: " + stpmStatus);
-        console.log("A-Level: " + alevelStatus);
-        console.log("UEC: " + uecStatus);
-        console.log("Diploma: " + diplomaStatus);
-        console.log("Other: " + otherStatus);
-
-        if (
-            spmStatus === false ||
-            stpmStatus === false ||
-            alevelStatus === false ||
-            uecStatus === false ||
-            diplomaStatus === false ||
-            otherStatus === false
-        ) {
-            status = false;
-        } else {
+        // Set formStatus based on the validation result
+        if (isFormValid) {
             status = true;
+        } else {
+            status = false;
         }
-        console.log("STATUS" + status);
+
+        const userID = (await supabase.auth.getUser()).data.user.id;
+
+        const currentDate = getCurrentDateTime();
+
+
 
         //Insert data to supabase
+        const { data, error } = await supabase.from("Application")
+            .insert([
+                {
+                    name: values.name,
+                    identity_number: values.identity_number,
+                    gender: values.gender,
+                    phone_number: values.phone_number,
+                    intake: values.intake,
+                    programme_level: values.programme_level,
+                    programme: values.programme,
+                    status: status,
+                    appliedDate: currentDate,
+                    studentID: userID,
 
-        // try {
-        //     const { data, error } = await supabase.from("Application").insert([
-        //         {
-        //             name: values.name,
-        //             identity_number: values.identity_number,
-        //             gender: values.gender,
-        //             phone_number: values.phone_number,
-        //             intake: values.intake,
-        //             programme_level: values.programme_level,
-        //             programme: values.programme,
-        //             status: status
-        //             // ic_photo_front: values.photo_ic_front,
-        //             // ic_photo_back: values.photo_ic_back,
-        //         },
-        //     ]);
-        //     if (error) {
-        //         // Handle any error that occurred during the insert operation
-        //         console.error("Error inserting data:", error);
-        //         // You can also throw the error to be caught by an outer try-catch block
-        //         throw error;
-        //     }
-        // } catch (error) {
-        //     // Handle any error that occurred during the try block
-        //     console.error("An error occurred:", error);
-        //     // Handle error-specific actions or show user-friendly messages
-        // }
-        // alert("You have submit an application form.")
+                }
+            ])
+            .select('applicationID');
 
+        let applicationID;
+
+
+        if (error) {
+            console.error("Error inserting data:", error);
+        } else if (data && data.length > 0) {
+            // Check if data is not empty and contains the applicationID
+            applicationID = data[0].applicationID;
+            console.log("Application ID:", applicationID);
+        } else {
+            // Handle the case where data is empty or missing applicationID
+            console.error("No application ID found in the response data.");
+        }
+
+        //Upload image to supabase storage
+        const { data: data1, error: error1 } = await supabase.storage
+            .from("Application")
+            .upload(`${applicationID}/ic_photo_front`, icFront[0].originFileObj, {
+                cacheControl: '3600',
+                upsert: false,
+                contentType: 'image/png',
+            });
+
+        if (error1) {
+            console.error("Error uploading data:", error1);
+        }
+
+        const { data: data2, error: error2 } = await supabase.storage
+            .from("Application")
+            .upload(`${applicationID}/ic_photo_back`, icBack[0].originFileObj, {
+                cacheControl: '3600',
+                upsert: false,
+                contentType: 'image/png',
+            });
+
+        if (error2) {
+            console.error("Error uploading data:", error2);
+        }
+
+        //Update data to supabase
+        const { data: data3, error: error3 } = await supabase.from("Application")
+            .update({
+                ic_photo_front: `${applicationID}/ic_photo_front`,
+                ic_photo_back: `${applicationID}/ic_photo_back`,
+            })
+            .eq('applicationID', applicationID);
+
+        if (error3) {
+            console.error("Error updating data:", error3);
+        }
+
+        // Store certificate to supabase storage
+        for (const index in academicSections) {
+            if (Object.hasOwnProperty.call(academicSections, index)) {
+                const { certificate } = academicSections[index];
+
+                console.log(certificate);
+
+                const { data: data4, error: error4 } = await supabase.storage
+                    .from("Application")
+                    .upload(`${applicationID}/${index}/certificate`, certificate[0].originFileObj, {
+                        cacheControl: '3600',
+                        upsert: false,
+                        contentType: 'application/pdf',
+                    });
+
+                if (error4) {
+                    console.error("Error uploading data:", error4);
+                }
+
+                // Change the url to the academicSections
+                academicSections[index].certificate = `${applicationID}/${index}/certificate`;
+
+                console.log(academicSections[index].certificate);
+            }
+        }
+
+        console.log(academicSections);
+
+        //Insert academic section to supabase
+        const { data: data5, error: error5 } = await supabase.from("Application")
+            .update({
+                academicResult: academicSections,
+            })
+            .eq('applicationID', applicationID);
+
+        if (error5) {
+            console.error("Error updating data:", error5);
+        }
+
+        console.log(data5);
+
+        message.loading('Creating application...', 1);
+
+        setTimeout(() => {
+            message.success('Application created successfully!', 2);
+        }, 1000);
+
+        setTimeout(() => {
+            navigate("/student/application");
+        }, 3000);
     };
 
     const onFinishFailed = (e) => {
@@ -342,27 +397,45 @@ function CreateApplication() {
 
 
 
+    const [academicSections, setAcademicSections] = useState([{ level: undefined, certificate: null, answers: {} }]);
 
+    const handleAddSection = () => {
+        setAcademicSections([...academicSections, { level: undefined, certificate: null, answers: {} }]);
+    };
 
+    const handleRemoveSection = (index) => {
+        const updatedSections = [...academicSections];
+        updatedSections.splice(index, 1);
+        setAcademicSections(updatedSections);
+    };
 
-    //Prompt out questions
-    const [selectedAcademicResults, setSelectedAcademicResults] = useState([]);
+    const handleChangeLevel = (index, value) => {
+        const updatedSections = [...academicSections];
+        updatedSections[index].level = value;
+        setAcademicSections(updatedSections);
+    };
 
-    const handleAcademicResultChange = (value, key) => {
-        const updatedResults = [...selectedAcademicResults];
-        updatedResults[key] = value; // Store the selected academic result at the specified index
-        setSelectedAcademicResults(updatedResults);
+    const handleChangeCertificate = (index, fileList) => {
+        const updatedSections = [...academicSections];
+        updatedSections[index].certificate = fileList;
+        setAcademicSections(updatedSections);
+    };
+
+    const handleChangeAnswer = (index, question, answer) => {
+        const updatedSections = [...academicSections];
+        updatedSections[index].answers[question] = answer;
+        setAcademicSections(updatedSections);
     };
 
     const academicResultQuestions = {
-        spm: [
+        "SPM": [
             { label: 'Did you achieve a grade of C or higher in Addmath?', type: 'select', options: ['Yes', 'No'] },
             { label: 'Did you achieve a grade of C or higher in English?', type: 'select', options: ['Yes', 'No'] },
         ],
-        stpm: [
+        "STPM": [
             { label: 'Did you achieve a grade of C or higher in your Mathematics subject?', type: 'select', options: ['Yes', 'No'] },
         ],
-        alevel: [
+        "A-Level": [
             {
                 label: 'Have you received a grade of D in at least two relevant subjects?',
                 type: 'select',
@@ -370,7 +443,7 @@ function CreateApplication() {
                 additionalLabel: 'Relevant Subjects: Mathematic and ICT, English, etc',
             },
         ],
-        uec: [
+        "UEC": [
             {
                 label: 'Have you obtained a grade of B or higher in at least five relevant subjects?',
                 type: 'select',
@@ -378,10 +451,14 @@ function CreateApplication() {
                 additionalLabel: 'Relevant Subjects: Mathematic and ICT, English, etc',
             },
         ],
-        diploma: [
+        "Foundation": [
+            { label: 'What is your CGPA for the TARUMT Foundation program', type: 'input' },
+        ],
+        "Diploma": [
             { label: 'What is your CGPA for the TARUMT Diploma program', type: 'input' },
         ],
-        other: [
+
+        "Other": [
             { label: 'What is your CGPA for other institute of higher learning?', type: 'input' },
         ],
     };
@@ -466,24 +543,6 @@ function CreateApplication() {
         </div>
     );
 
-    const [uploadedDocuments, setUploadedDocuments] = useState([]);
-
-    const handleDocumentsUpload = (info, key) => {
-
-        console.log(info);
-        // First, make a copy of the current state
-        let newUploads = [...uploadedDocuments];
-
-        // Check if file is being uploaded or removed and take appropriate action
-        if (info.file.status === 'done') {
-            newUploads[key] = info.file; // Save the uploaded file info
-        } else if (info.file.status === 'removed') {
-            newUploads[key] = null; // Remove the file info
-        }
-
-        // Update the state
-        setUploadedDocuments(newUploads);
-    };
 
     const beforeDocumentUpload = (file) => {
         const isPdf = file.type === 'application/pdf';
@@ -901,148 +960,111 @@ function CreateApplication() {
                     {/* CHECK */}
                     <Title level={4}>Academic Result</Title>
 
-                    <Form.List name="support_document">
-                        {(fields, { add, remove }) => (
-                            <>
-                                {fields.map(({ key, name, ...restField }) => (
-                                    <div key={key}>
-                                        <Row>
-                                            <Col span={10}>
-                                                <Form.Item
-                                                    {...restField}
-                                                    name={[name, "academicLevel"]}
-                                                    label="Academic Level"
-                                                    rules={[
-                                                        {
-                                                            required: true,
-                                                            message: "Please select an option from the dropdown.",
-                                                        },
-                                                    ]}
-                                                >
-                                                    <Select
-                                                        size="large"
-                                                        defaultValue="Please select your academic level."
-                                                        style={{ width: 300 }}
-                                                        showSearch
-                                                        filterOption={
-                                                            (inputValue, option) =>
-                                                                option.label
-                                                                    .toLowerCase()
-                                                                    .indexOf(inputValue.toLowerCase()) >= 0 //-1 is not found
-                                                        }
-                                                        {...restField}
-                                                        options={[
-                                                            { value: "spm", label: "SPM" },
-                                                            { value: "stpm", label: "STPM" },
-                                                            { value: "alevel", label: "A Level" },
-                                                            { value: "uec", label: "UEC" },
-                                                            { value: "foundation", label: "TARUMT Foundation" },
-                                                            { value: "diploma", label: "TARUMT DIPLOMA" },
-                                                            {
-                                                                value: "other",
-                                                                label: "Other Institutes of Higher Learning",
-                                                            },
-                                                        ]}
-                                                        value={selectedAcademicResults[key]}
-                                                        onChange={(value) =>
-                                                            handleAcademicResultChange(value, key)
-                                                        } // Call the handler to update selectedAcademicResult
-                                                    />
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={7} offset={1}>
-                                                <Form.Item
-                                                    {...restField}
-                                                    name={[name, "certificate"]}
-                                                    label="Certificate"
-                                                    extra="Only PDF files are allowed. Maximum file size is 10MB."
-                                                    rules={[{ required: true, message: "Missing Document" }]}
-                                                >
-                                                    <Upload
-                                                        name="logo"
-                                                        listType="text"
-                                                        onChange={(info) => handleDocumentsUpload(info, key)}
-                                                        customRequest={dummyRequest}
-                                                        beforeUpload={beforeDocumentUpload}
-
-                                                    >
-                                                        <Button icon={<UploadOutlined />}>Click to upload</Button>
-                                                    </Upload>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={2} style={{ display: 'flex', alignItems: 'center' }}>
-                                                <MinusCircleOutlined
-                                                    style={{ margin: '0 8px', fontSize: '1.0rem' }}
-                                                    onClick={() => {
-                                                        remove(name);
-                                                        const updatedResults = [...selectedAcademicResults];
-                                                        updatedResults.splice(key, 1);
-                                                        setSelectedAcademicResults(updatedResults);
-
-                                                        // Also remove from uploaded documents
-                                                        const newUploads = [...uploadedDocuments];
-                                                        newUploads.splice(key, 1);
-                                                        setUploadedDocuments(newUploads);
-                                                    }}
-                                                />
-                                            </Col>
-                                            <Divider />
-                                        </Row>
-
-                                        {/* QNA Section */}
-                                        <Row>
-                                            <Col span={24}>
-                                                {selectedAcademicResults[key] && academicResultQuestions[selectedAcademicResults[key]].map((question, index) => {
-                                                    const { label, type, options } = question;
-                                                    return (
-                                                        <Form.Item
-                                                            key={index}
-                                                            name={`qna-${name}-${index}`}
-                                                            label={label}
-                                                            rules={[
-                                                                {
-                                                                    required: true,
-                                                                    message: `Please provide an answer to ${label}`,
-                                                                },
-                                                            ]}
-                                                        >
-                                                            {type === 'select' && (
-                                                                <Select placeholder={`Select for ${label}`}>
-                                                                    {options.map((option, optionIndex) => (
-                                                                        <Select.Option key={optionIndex} value={option}>
-                                                                            {option}
-                                                                        </Select.Option>
-                                                                    ))}
-                                                                </Select>
-                                                            )}
-
-                                                            {type === 'input' &&
-                                                                <InputNumber
-                                                                    placeholder={`Enter for ${label}`}
-                                                                    min={0} max={4}
-                                                                    style={{ width: '20%' }}
-                                                                    stringMode step={0.01} />}
-                                                        </Form.Item>
-                                                    );
-                                                })}
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                ))}
-                                <Form.Item>
-                                    <Button
-                                        type="dashed"
-                                        onClick={() => add()}
-                                        block
-                                        icon={<PlusOutlined />}
+                    {academicSections.map((section, index) => (
+                        <div key={index}>
+                            <Row>
+                                <Col span={8}>
+                                    <Form.Item label="Academic Level"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Please don't leave blank on this field.",
+                                            }
+                                        ]}>
+                                        <Select
+                                            value={section.level}
+                                            onChange={(value) => handleChangeLevel(index, value)}
+                                            style={{ width: '100%' }}
+                                            placeholder="Please select your academic level"
+                                            allowClear
+                                        >
+                                            {/* Populate academic levels dynamically */}
+                                            {Object.keys(academicResultQuestions).map((level) => (
+                                                <Option key={level} value={level}>
+                                                    {level}
+                                                </Option>
+                                            ))}
+                                        </Select>
+                                    </Form.Item>
+                                </Col>
+                                <Col span={7} offset={2}>
+                                    <Form.Item label="Upload Certificate"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: "Please don't leave blank on this field.",
+                                            }
+                                        ]}
                                     >
-                                        Add field
-                                    </Button>
-                                </Form.Item>
-                            </>
-                        )}
-                    </Form.List>
+                                        <Upload
+                                            fileList={section.certificate}
+                                            onChange={({ fileList }) => handleChangeCertificate(index, fileList)}
+                                            beforeUpload={beforeDocumentUpload}
+                                            customRequest={dummyRequest}
+                                            type="text"
+                                        >
+                                            <Button icon={<UploadOutlined />}>Click to upload</Button>
+                                        </Upload>
+                                    </Form.Item>
+                                </Col>
+                                <Col span={2} style={{ display: 'flex', alignItems: 'center' }}>
+                                    <Button
+                                        type="danger"
+                                        icon={<DeleteOutlined />}
+                                        onClick={() => handleRemoveSection(index)}
+                                    />
+                                </Col>
+                            </Row>
+                            {section.level && (
+                                <div>
+                                    {academicResultQuestions[section.level].map((question, qIndex) => (
+                                        <Row>
+                                            <Form.Item key={qIndex * 100} label={question.label}
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: "Please don't leave blank on this field.",
+                                                    }
+                                                ]}
+                                            >
+                                                {question.type === 'select' ? (
+                                                    <Select
+                                                        value={section.answers[question.label]}
+                                                        onChange={(value) =>
+                                                            handleChangeAnswer(index, question.label, value)
+                                                        }
+                                                    >
+                                                        {question.options.map((option) => (
+                                                            <Option key={option} value={option}>
+                                                                {option}
+                                                            </Option>
+                                                        ))}
+                                                    </Select>
+                                                ) : (
+                                                    <Input
+                                                        value={section.answers[question.label]}
+                                                        onChange={(e) =>
+                                                            handleChangeAnswer(index, question.label, e.target.value)
+                                                        }
+                                                    />
+                                                )}
+                                            </Form.Item>
+                                        </Row>
+                                    ))}
+                                </div>
+                            )}
 
+                            <Divider />
+                        </div>
+                    ))}
+
+                    <Button
+                        type="dashed"
+                        icon={<PlusOutlined />}
+                        onClick={handleAddSection}
+                    >
+                        Add Academic Section
+                    </Button>
 
                     <div style={buttonContainerStyle}>
                         {/* Add the "Create New Application" button */}

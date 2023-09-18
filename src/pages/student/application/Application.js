@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Divider, Table, Typography } from 'antd';
+import { Button, Divider, Table, Tag, Typography } from 'antd';
 import { supabase } from "../../../supabase-client";
 import { useNavigate } from "react-router-dom";
 
@@ -38,7 +38,10 @@ function Application() {
           programmeLevel: item.programme_level,
           programmeApplied: item.programme,
           applicationDate: item.appliedDate,
-          status: item.status
+          status: (item.status === true ? 
+            <Tag color="green">Pass</Tag> :
+            <Tag color="red">Fail</Tag>)
+
         })
       })
     }

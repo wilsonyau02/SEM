@@ -16,6 +16,7 @@ import ActivityLog from "./pages/admin/activityLog/ActivityLog";
 import StudentInquiry from "./pages/student/inquiry/StudentInquiry";
 import CreateApplication from "./pages/student/application/CreateApplication";
 import ProgramDetails from "./pages/student/home/ProgramDetails";
+import Testing from "./pages/student/application/Testing";
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
               <Route path="programDetails" element={<ProgramDetails />} />
               <Route path="application" element={<Application />} />
               <Route path="application/new" element={<CreateApplication />} />
+              <Route path="application/testing" element={<Testing />} />
               <Route path="academician" element={<AcademicianDirectory />} />
               <Route path="studentInquiry" element={<StudentInquiry />} />
               <Route path="*" element={<NotFound backTo="student"/>} />
