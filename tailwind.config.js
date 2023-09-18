@@ -11,7 +11,10 @@ module.exports = {
         '26': '6.5rem'
       },
       maxWidth: {
-        '14': '14rem'
+        '18': '18rem'
+      },
+      fontSize: {
+        'xxs': '.6rem'
       },
     },
   },

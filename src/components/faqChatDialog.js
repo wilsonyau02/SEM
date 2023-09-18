@@ -379,7 +379,7 @@ const FaqChatDialog = ({ isVisible, onClose }) => {
 
   return (
     <div
-      className={`w-80 h-auto fixed bottom-26 right-24 rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] transform transition-all ${
+      className={`w-96 h-auto fixed bottom-26 right-24 rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] transform transition-all ${
         isVisible
           ? "opacity-100 translate-y-0 translate-x-0"
           : "opacity-0 translate-y-10 translate-x-10 pointer-events-none"
@@ -413,7 +413,7 @@ const FaqChatDialog = ({ isVisible, onClose }) => {
                     className={`bg-gray-200 rounded-lg p-3 ${
                       message.isUser
                         ? "bg-orange-300 text-left text-black ml-2"
-                        : "bg-gray-200 text-left text-black ml-2 mr-12 max-w-14"
+                        : "bg-gray-200 text-left text-black ml-2 max-w-18"
                     }`}
                   >
                     {message.text}

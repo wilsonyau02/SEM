@@ -30,8 +30,8 @@ function PageLayout() {
             label: 'Academician'
         },
         {
-            key: '/help',
-            label: 'Help',
+            key: '/studentInquiry',
+            label: 'Inquiry',
         },
         // {
         //     key: '/logout',
