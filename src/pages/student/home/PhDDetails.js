@@ -1,11 +1,17 @@
 import { Collapse } from "antd";
 import { BiSolidBookBookmark, BiSolidUpArrowCircle, BiSolidSchool, BiSolidCheckSquare, BiTimer } from "react-icons/bi";
+import { GiGraduateCap } from 'react-icons/gi';
 import './programme.css';
 
 const PhDDetails = ({ course }) => {
     return (
         <>
-            <Collapse ghost style={{ width: '80%', marginLeft: 'auto', marginRight: 'auto'}}>
+            <h4 style={{ marginLeft: '20px', marginBottom: '15px', fontWeight: 'bold', fontSize: '20px', display: 'flex', alignItems: 'center' }}>
+                {course.progCategory}
+                <GiGraduateCap style={{ marginLeft: '10px', marginTop: '5px' }} />
+
+            </h4>
+            <Collapse ghost style={{ width: '80%', marginLeft: 'auto', marginRight: 'auto' }}>
                 <Collapse.Panel
                     header={
                         <div className="custom-header" style={{ fontWeight: 'bold' }}>

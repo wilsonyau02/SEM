@@ -62,7 +62,7 @@ const ProgramSelector = ({ onProgramSelect }) => {
 
     return (
         <>
-            <h1 style={{ textAlign: 'center' }}>Programs Offered</h1>
+            <h1 style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '35px', marginTop: '10px'}}>Programs Offered</h1>
             <div style={parentContainerStyle}>
                 <div style={containerStyle}></div>
             </div>

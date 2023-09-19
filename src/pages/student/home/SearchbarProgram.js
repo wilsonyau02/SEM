@@ -13,10 +13,16 @@ const SearchbarProgram = ({ onProgramChange }) => {
     { value: 'Master of Science in Mathematical Sciences', index: 2 },
     { value: 'Bachelor of Information Systems', index: 0 },
     { value: 'Bachelor of Software Engineering', index: 1 },
-    { value: 'Bachelor of Computer Science', index: 2 },
+    { value: 'Bachelor of Computer Science (IST)', index: 2 },
+    { value: 'Bachelor of Science (Mathematics)', index: 3 },
+    { value: 'Bachelor of Information Technology (SSD)', index: 4 },
+    { value: 'Bachelor of Information Technology (IT)', index: 5 },
+    { value: 'Bachelor of Information Technology (IS)', index: 7 },
+    { value: 'Bachelor of Computer Science (DS)', index: 6},
     { value: 'Diploma in Computer Science', index: 0 },
     { value: 'Diploma in Information Systems', index: 1 },
     { value: 'Diploma in Software Engineering', index: 2 },
+    { value: 'Diploma in Software Technology', index: 3 },
   ];
 
   const onSelect = (value) => {

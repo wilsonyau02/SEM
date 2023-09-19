@@ -5,25 +5,25 @@ const CompareResultsModal = ({ isVisible, onClose, selectedCourses }) => {
     const criteriaWidth = 10; // in percentage
 
     const remainingWidth = 100 - criteriaWidth; // 80% if criteriaWidth is 20%
-const otherColumns = selectedCourses.length;
-const columnWidth = remainingWidth / otherColumns; // Percentage width for each of the other columns
+    const otherColumns = selectedCourses.length;
+    const columnWidth = remainingWidth / otherColumns; // Percentage width for each of the other columns
 
 
-const columns = [
-    {
-        title: 'Criteria',
-        dataIndex: 'criteria',
-        key: 'criteria',
-        width: `${criteriaWidth}%`,
-        render: text => <strong>{text}</strong>,
-    },
-    ...selectedCourses.map(course => ({
-        title: course.progName,
-        dataIndex: course.progId,
-        key: course.progId,
-        width: `${columnWidth}%`
-    }))
-];
+    const columns = [
+        {
+            title: 'Criteria',
+            dataIndex: 'criteria',
+            key: 'criteria',
+            width: `${criteriaWidth}%`,
+            render: text => <strong>{text}</strong>,
+        },
+        ...selectedCourses.map(course => ({
+            title: course.progName,
+            dataIndex: course.progId,
+            key: course.progId,
+            width: `${columnWidth}%`
+        }))
+    ];
 
 
 
@@ -43,7 +43,7 @@ const columns = [
 
     function generateRowData(key) {
         return selectedCourses.reduce((acc, course) => {
-            if (key === 'progCategory') { 
+            if (key === 'progCategory') {
                 acc[course.progId] = course.progCategory || course.progName; // Use progName if progCategory is null
             } else if (key === 'academicProg') {
                 if (!course.academicProg) {
@@ -74,7 +74,7 @@ const columns = [
                 } else {
                     content.push(course.outline || 'N/A');
                 }
-    
+
                 // Electives
                 ['elective1', 'elective2', 'elective3', 'elective4', 'otherSub'].forEach(electiveKey => {
                     if (course[electiveKey]) {
@@ -90,9 +90,9 @@ const columns = [
                         }
                     }
                 });
-    
+
                 acc[course.progId] = content;
-    
+
             } else if (['progLvl', 'progName'].includes(key)) {
                 acc[course.progId] = course[key];
             } else if (key === 'minEntry') {
@@ -121,11 +121,11 @@ const columns = [
             return acc;
         }, {});
     }
-    
-    
-    
-    
-    
+
+
+
+
+
 
 
 
@@ -144,7 +144,7 @@ const columns = [
             <Table columns={columns} dataSource={data} pagination={false} />
         </Modal>
     );
-    
+
 }
 
 export default CompareResultsModal;

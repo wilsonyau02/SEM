@@ -1,10 +1,16 @@
 import { Collapse, Image } from "antd";
 import { BiSolidBookBookmark, BiTimer, BiListOl, BiSolidSchool, BiSolidUpArrowCircle, BiSolidCheckSquare } from "react-icons/bi";
+import { GiGraduateCap } from 'react-icons/gi'
 import './programme.css';
 
 const DegreeDetails = ({ course }) => {
     return (
         <>
+            <h4 style={{ marginLeft: '20px', marginBottom: '15px', fontWeight: 'bold', fontSize: '20px', display: 'flex', alignItems: 'center' }}>
+            {course.progCategory}
+                <GiGraduateCap style={{marginLeft: '10px', marginTop: '5px'}}/>
+
+            </h4>
             <Collapse ghost style={{ width: '80%', marginLeft: 'auto', marginRight: 'auto' }}>
                 <Collapse.Panel
                     header={
@@ -321,38 +327,38 @@ const DegreeDetails = ({ course }) => {
                     </ul>
                     <p style={{ marginLeft: '25px', marginBottom: '10px' }}>
                         For more information on Fees,
-                        <a href="https://www.tarc.edu.my/bursary/content.jsp?cat_id=5AA0377F-4E7F-494A-8EB4-CEF5CE4DD7AE" style={{fontStyle:'italic'}}> Click Here</a>.
+                        <a href="https://www.tarc.edu.my/bursary/content.jsp?cat_id=5AA0377F-4E7F-494A-8EB4-CEF5CE4DD7AE" style={{ fontStyle: 'italic' }}> Click Here</a>.
                     </p>
                     <p style={{ marginLeft: '25px', marginBottom: '10px', fontWeight: 'bold' }}>
                         Merit Scholarship
                     </p>
                     <p style={{ marginLeft: '25px', marginBottom: '10px' }}>
-                        To find out more, 
-                        <a href="https://www.tarc.edu.my/admissions/contentsub.jsp?cat_id=58F1E9DB-53BF-4657-8DD6-80056FEAF89F&fmenuid=" style={{fontStyle:'italic'}}> Click Here</a>
+                        To find out more,
+                        <a href="https://www.tarc.edu.my/admissions/contentsub.jsp?cat_id=58F1E9DB-53BF-4657-8DD6-80056FEAF89F&fmenuid=" style={{ fontStyle: 'italic' }}> Click Here</a>
                         .
                     </p>
                     <p style={{ marginLeft: '25px', marginBottom: '10px', fontWeight: 'bold' }}>
                         Other Scholarship
                     </p>
                     <p style={{ marginLeft: '25px', marginBottom: '10px' }}>
-                        To find out more, 
-                        <a href="https://www.tarc.edu.my/dsa/financial-aid/scholarships-grants/" style={{fontStyle:'italic'}}> Click Here</a>
+                        To find out more,
+                        <a href="https://www.tarc.edu.my/dsa/financial-aid/scholarships-grants/" style={{ fontStyle: 'italic' }}> Click Here</a>
                         .
                     </p>
                     <p style={{ marginLeft: '25px', marginBottom: '10px', fontWeight: 'bold' }}>
                         Financial Aid
                     </p>
                     <p style={{ marginLeft: '25px', marginBottom: '10px' }}>
-                        For PTPTN, 
-                        <a href="https://www.tarc.edu.my/dsa/financial-aid/ptptn/" style={{fontStyle:'italic'}}> Click Here</a>.
+                        For PTPTN,
+                        <a href="https://www.tarc.edu.my/dsa/financial-aid/ptptn/" style={{ fontStyle: 'italic' }}> Click Here</a>.
 
                     </p>
                     <p style={{ marginLeft: '25px', marginBottom: '10px' }}>
-                        For Study Loan, 
+                        For Study Loan,
                         <a href="https://www.tarc.edu.my/dsa/financial-aid/study-loans/"> Click Here</a>.
                     </p>
                     <p style={{ marginLeft: '25px', marginBottom: '10px' }}>
-                        For more information on Financial Aid, 
+                        For more information on Financial Aid,
                         <a href="https://www.tarc.edu.my/dsa/financial-aid/financial-aid/"> Click Here</a>.
                     </p>
 
