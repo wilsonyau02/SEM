@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import InquiryModal from "../../../components/inquiryModal";
 import { postInquiry, fetchInquiries } from "../../../supabase-client";
 import { useAuth } from "../../../context/AuthProvider";
+import FaqButton from "../../../components/faqButton";
 
 const StudentInquiry = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -83,7 +84,8 @@ const StudentInquiry = () => {
                   <p>{inquiry.response}</p>
                   {inquiry.responded_at && (
                     <div className="text-xxs text-gray-500">
-                      Responded at {new Date(inquiry.responded_at).toLocaleString()}
+                      Responded at{" "}
+                      {new Date(inquiry.responded_at).toLocaleString()}
                     </div>
                   )}
                 </div>
@@ -99,6 +101,7 @@ const StudentInquiry = () => {
         title={"Make an Inquiry"}
         placeholder={"Type your inquiry here..."}
       />
+      <FaqButton />
     </div>
   );
 };
