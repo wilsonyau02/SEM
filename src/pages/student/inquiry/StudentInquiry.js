@@ -51,6 +51,7 @@ const StudentInquiry = () => {
     fontSize: '30px'
   };
 
+  const userInquiries = inquiries.filter((inquiry) => inquiry.author === userId);
 
   return (
     <div>
@@ -71,7 +72,7 @@ const StudentInquiry = () => {
       <div
         className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4`}
       >
-        {inquiries.map((inquiry) => (
+        {userInquiries.map((inquiry) => (
           <div
             key={inquiry.id}
             className="bg-white rounded-lg shadow-md border border-orange-400 relative h-fit break-words"
