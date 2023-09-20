@@ -5,6 +5,7 @@ import {
   updateInquiryResponse,
 } from "../../../supabase-client";
 import { useAuth } from "../../../context/AuthProvider";
+import Typography from "antd/es/typography/Typography";
 
 const AdminInquiry = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,9 +44,7 @@ const AdminInquiry = () => {
 
   return (
     <div>
-      <div className="flex flex-col items-center mt-3 border-b-2 pb-2">
-        <h1 className="font-bold text-4xl">Answer Inquiries</h1>
-      </div>
+      <Typography.Title level={2}>Answer Inquiries</Typography.Title>
       <div
         className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4`}
       >
