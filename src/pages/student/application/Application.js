@@ -66,6 +66,7 @@ function Application() {
       title: 'Programme Level',
       dataIndex: 'programmeLevel',
       key: 'programmeLevel',
+      render: (text) => <span>{text.toUpperCase()}</span>,
     },
     {
       title: 'Programme Applied',
@@ -88,9 +89,8 @@ function Application() {
     fontFamily: "Century Gothic",
     fontSize: '18px',
     color: '#000080',
-    padding: 10,
     textAlign: 'center',
-    padding: '0px 5em'
+    padding: '10px 5em'
   };
 
   const texStyle = {

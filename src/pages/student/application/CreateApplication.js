@@ -103,6 +103,7 @@ function CreateApplication() {
 
         const currentDate = getCurrentDateTime();
 
+        const fullAddress = `${values.address}, ${values.postcode} ${values.city}, ${values.state}`;
 
 
         //Insert data to supabase
@@ -119,7 +120,7 @@ function CreateApplication() {
                     status: status,
                     appliedDate: currentDate,
                     studentID: userID,
-
+                    address: fullAddress,
                 }
             ])
             .select('applicationID');
@@ -239,17 +240,83 @@ function CreateApplication() {
     };
 
     //Handle Address
-    const [postcodeValue, setPostcodeValue] = useState("");
+    const [postCode, setPostCode] = useState({
+        value: '',
+    });
 
-    // Function to handle input changes
-    const handlePostcodeChange = (e) => {
+    const validatePostcode = (value) => {
+        if (value.length == 0) {
+            clearPropertyStateAndCity();
+            return {
+                validateStatus: 'error',
+                errorMsg: 'Please enter valid postcode!',
+            }
+        }
+        else {
+            form.setFieldValue('state', value[0].state.state_name);
+            form.setFieldValue('city', value[0].post_office);
+            return {
+                validateStatus: 'success',
+                errorMsg: null,
+            }
+        }
+    }
+
+    
+    const handlePostCode = async (e) => {
         const value = e.target.value;
+        const POSTCODE_REGEX = /^\d{5}$/;
 
-        // if(value.length === 5){
-        setPostcodeValue(value);
-        // }
+        //Check if the postcode is empty
+        if (value.length === 0) {
+            setPostCode({
+                validateStatus: 'error',
+                errorMsg: 'Please enter the property postcode!',
+            });
+            clearPropertyStateAndCity();
+            return;
+        }
+        //Check if the postcode is in correct format
+        if (!POSTCODE_REGEX.test(value)) {
+            setPostCode({
+                validateStatus: 'error',
+                errorMsg: 'Incorrect format!',
+            });
+            clearPropertyStateAndCity();
+            return;
+        } 
+        //Check if the postcode is valid
+        try {
+            const { data, error } = await supabase
+                .from('malaysia_postcode')
+                .select('postcode, post_office, state_code, state(state_name)')
+                .eq('postcode', e.target.value);
+            if (error) {
+                console.log(error)
+                return;
+            }
+            const validationResult = validatePostcode(data);
+            setPostCode({
+                ...validationResult,
+                value,
+            });
+
+            //If the postcode is valid, set the property state and city
+            if (validationResult.validateStatus === 'success') {
+                form.setFieldValue('state', data[0].state.state_name);
+                form.setFieldValue('city', data[0].post_office);
+            } else {
+                clearPropertyStateAndCity();
+            }
+        } catch (error) {
+            console.log(error)
+        }
     };
 
+    const clearPropertyStateAndCity = () => {
+        form.setFieldValue('state', '');
+        form.setFieldValue('city', '');
+      }
 
     //Validation rules
     const icValidator = (rule, value) => {
@@ -756,8 +823,17 @@ function CreateApplication() {
                     </Form.Item>
 
                     <Row>
-                        <Col span={7}>
-                            <Form.Item name="postcode" label="Postcode" hasFeedback>
+                        <Col span={5}>
+                            <Form.Item 
+                                name="postcode" 
+                                label="Postcode" 
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please don't leave blank on postcode field.",
+                                    },
+                                ]}
+                                hasFeedback>
                                 <Input
                                     placeholder="Postcode"
                                     size="large"
@@ -765,6 +841,8 @@ function CreateApplication() {
                                     allowClear="true"
                                     prefix={<HomeOutlined />}
                                     maxLength="5"
+                                    onChange={handlePostCode}
+                                    value={postCode.value}
                                 />
                             </Form.Item>
                         </Col>
@@ -778,11 +856,12 @@ function CreateApplication() {
                                     allowClear="true"
                                     prefix={<HomeOutlined />}
                                     maxLength="100"
+                                    disabled
                                 />
                             </Form.Item>
                         </Col>
 
-                        <Col span={7} offset={1}>
+                        <Col span={10} offset={1}>
                             <Form.Item name="state" label="State" hasFeedback>
                                 <Input
                                     placeholder="State"
@@ -791,6 +870,7 @@ function CreateApplication() {
                                     allowClear="true"
                                     prefix={<HomeOutlined />}
                                     maxLength="100"
+                                    disabled
                                 />
                             </Form.Item>
                         </Col>

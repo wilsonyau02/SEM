@@ -62,7 +62,7 @@ function App() {
             <Route path="/update-password" element={<Navigate to="/admin" />} />
 
             <Route path="/admin/" element={<AdminLayout />}>
-              <Route index element={<Home />} />
+              <Route index element={<ProcessApplication />} />
               <Route path="application" element={<ProcessApplication />} />
               <Route path="adminInquiry" element={<AdminInquiry />} />
               <Route path="activityLog" element={<ActivityLog />} />

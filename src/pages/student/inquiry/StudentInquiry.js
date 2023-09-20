@@ -3,6 +3,7 @@ import InquiryModal from "../../../components/inquiryModal";
 import { postInquiry, fetchInquiries } from "../../../supabase-client";
 import { useAuth } from "../../../context/AuthProvider";
 import FaqButton from "../../../components/faqButton";
+import { Button, Divider } from "antd";
 
 const StudentInquiry = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,20 +38,36 @@ const StudentInquiry = () => {
     fetchInquiriesFromSupabase();
   }, []);
 
+  const containerStyle = {
+    fontFamily: "Century Gothic",
+    fontSize: '18px',
+    color: '#000080',
+    textAlign: 'center',
+    padding: '10px 5em'
+  };
+
+  const texStyle = {
+    fontWeight: "bold",
+    fontSize: '30px'
+  };
+
+
   return (
     <div>
-      <div className="flex flex-col items-center mt-3 border-b-2 pb-2">
-        <h1 className="font-bold text-4xl">Inquiries</h1>
-        <p className="mt-2">
-          Please leave an inquiry, and it will be answered as soon as possible
+       <div style={containerStyle} className="academicianContainer">
+        <p style={texStyle}>
+        Inquiries
         </p>
-        <button
-          className="mt-4 px-4 py-2 bg-orange-400 text-white rounded hover:bg-orange-500 font-bold"
-          onClick={openModal}
-        >
-          Post Inquiry
-        </button>
+        <p>
+        Have questions or need more information? Don't hesitate to reach out to us. 
+          We're here to assist you and provide the answers you need. 
+          Feel free to contact our dedicated team for inquiries and assistance.        </p>
+        <Button type="primary" size="large" style={{ margin: '1em 0px' }} onClick={openModal}>
+          Post Inquiries
+        </Button>
       </div>
+      <Divider />
+  
       <div
         className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4`}
       >
@@ -68,9 +85,8 @@ const StudentInquiry = () => {
                   {inquiry.status === "pending" ? "In Progress" : "Completed"}
                 </span>
                 <div
-                  className={`w-3 h-3 rounded-full ${
-                    inquiry.status === "pending" ? "bg-red-500" : "bg-green-500"
-                  }`}
+                  className={`w-3 h-3 rounded-full ${inquiry.status === "pending" ? "bg-red-500" : "bg-green-500"
+                    }`}
                 ></div>
               </div>
             </div>

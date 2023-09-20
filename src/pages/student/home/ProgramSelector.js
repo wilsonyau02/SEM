@@ -60,9 +60,30 @@ const ProgramSelector = ({ onProgramSelect }) => {
         </Card>
     );
 
+    const titleContainerStyle = {
+        fontFamily: "Century Gothic",
+        fontSize: '18px',
+        color: '#000080',
+        textAlign: 'center',
+        padding: '10px 5em'
+    };
+
+    const texStyle = {
+        fontWeight: "bold",
+        fontSize: '30px'
+    };
+
     return (
         <>
-            <h1 style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '35px', marginTop: '10px'}}>Programs Offered</h1>
+            <div style={titleContainerStyle} className="academicianContainer">
+                <p style={texStyle}>
+                    Our Programmes
+                </p>
+                <p>
+                    Explore our diverse range of programs designed to meet your educational needs. At TARUMT,
+                    we take pride in delivering high-quality educational experiences to help you achieve your goals.
+                </p>
+            </div>
             <div style={parentContainerStyle}>
                 <div style={containerStyle}></div>
             </div>

@@ -9,8 +9,8 @@ function AcademicianDirectory() {
         fontFamily: "Century Gothic",
         fontSize: '18px',
         color: '#000080',
-        padding: 10,
         textAlign: 'center',
+        padding: '10px 5em'
     };
 
     const texStyle = {
@@ -26,7 +26,7 @@ function AcademicianDirectory() {
                     Our Staff Directory
                 </p>
                 <p>
-                    With over years of teaching experience, we've got a well-seasoned team at the helm here at TARUMT.
+                    Explore our diverse range of programs designed to meet your educational needs. At TARUMT, we take pride in delivering high-quality educational experiences to help you achieve your goals.
                 </p>
             </div>
 
