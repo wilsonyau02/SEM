@@ -21,7 +21,7 @@ function ProgramDetails({ courses, programName, programIndex }) {
     const filteredCourses = selectedProgram
         ? courses.filter(course => course.progName === selectedProgram)
         : courses;
-
+        
         const defaultActiveKey = programIndex !== null ? filteredCourses[programIndex]?.progName : filteredCourses[0]?.progName;
     return (
         <div>

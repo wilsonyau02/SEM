@@ -171,7 +171,10 @@ export async function postInquiry(inquiry, userSession) {
 // Function to fetch inquiries from Supabase (inquiry)
 export async function fetchInquiries() {
   try {
-    let { data: inquiry, error } = await supabase.from("inquiry").select("*");
+    let { data: inquiry, error } = await supabase
+      .from("inquiry")
+      .select("*")
+      .order("created_at", { ascending: false });
 
     if (error) {
       console.error("Error fetching inquiries:", error.message);

@@ -60,7 +60,7 @@ const Home = () => {
             {isLoading ? (
                 // Display a loading spinner or any other loading UI
                 <div>
-                    
+
                 </div>
 
             ) : selectedProgramCourses ? (
@@ -94,12 +94,14 @@ const Home = () => {
                             programmeData={programmeData}
                         />
                     </div>
-                    <div style={{ width: '25%', display: 'flex', justifyContent: 'center', alignItems: 'start', marginTop: '10%' }}>
-                        <div style={{ width: '70%', padding: '25px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px', borderRadius: '5px' }}>
+                    <div style={{ width: '100%', maxWidth: '25rem', margin: '10% auto', textAlign: 'center' }}>
+                        <div style={{ width: '100%', maxWidth: '70%', padding: '25px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px', borderRadius: '5px' }}>
                             <h1 style={{ fontWeight: 'bold', textAlign: 'justify' }}>Compare your selected programs to find the best fit for you.</h1>
                             <Button type='primary' onClick={() => setCompareModalVisible(true)} style={{ marginTop: '50px' }}>Compare Now</Button>
                         </div>
                     </div>
+
+
                 </div>
             ) : <ProgramSelector onProgramSelect={handleProgramSelect} />}
 

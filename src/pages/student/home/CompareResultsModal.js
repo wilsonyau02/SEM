@@ -132,7 +132,7 @@ const CompareResultsModal = ({ isVisible, onClose, selectedCourses }) => {
     return (
         <Modal
             width="90%"
-            visible={isVisible}
+            open={isVisible}
             onCancel={onClose}
             title="Course Comparison"
             footer={[

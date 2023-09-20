@@ -20,7 +20,7 @@ const ComparisonModal = ({ isVisible, onClose, selectedCourses, setselectedCours
             {programmeData
                 .filter(course => filterCriteria(course.progName))
                 .map(course => (
-                    <div key={course.id}>
+                    <div key={course.progId}>
                         <Checkbox
                             value={course.progId}
                             disabled={maxChecked && !selectedCourses.map(c => c.progId).includes(course.progId)}
@@ -46,7 +46,7 @@ const ComparisonModal = ({ isVisible, onClose, selectedCourses, setselectedCours
     return (
         <Modal
             title={title}
-            visible={isVisible}
+            open={isVisible}
             onCancel={onClose}
             footer={[
                 <Button key="back" onClick={onClose}>

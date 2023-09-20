@@ -381,7 +381,7 @@ const FaqChatDialog = ({ isVisible, onClose }) => {
     <div
       className={`w-96 h-auto fixed bottom-26 right-24 rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] transform transition-all ${
         isVisible
-          ? "opacity-100 translate-y-0 translate-x-0"
+          ? "opacity-100 translate-y-0 translate-x-0 bg-white "
           : "opacity-0 translate-y-10 translate-x-10 pointer-events-none"
       }`}
     >
