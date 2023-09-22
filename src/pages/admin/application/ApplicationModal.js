@@ -148,7 +148,7 @@ function ApplicationModal({ isModalOpen, onChangeModal, applicationID, handleTri
 
                     <Divider />
 
-                    {applicationData.academicResult.map((result, index) => (
+                    {applicationData.academicResult && applicationData.academicResult.map((result, index) => (
                         <Descriptions title={`Academic Details ${index + 1}`} bordered key={index} labelStyle={descriptionLabelStyle} style={{ marginBottom: 20 }} >
                             <Descriptions.Item label="Level" span={2}>
                                 {result.level}

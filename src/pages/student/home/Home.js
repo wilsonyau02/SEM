@@ -97,7 +97,7 @@ const Home = () => {
                                 programmeData={programmeData}
                             />
                         </div>
-                        <div style={{ width: '100%', maxWidth: '25rem', textAlign: 'center', marginTop: '5em', marginRight: '2em' }}>
+                        <div style={{ width: '100%', maxWidth: '25rem', textAlign: 'center', marginTop: '5em', marginLeft: '2em' }}>
                             <div style={{
                                 width: '100%',
                                 maxWidth: '70%',

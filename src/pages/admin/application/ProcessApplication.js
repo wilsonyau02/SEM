@@ -44,10 +44,7 @@ function ProcessApplication() {
           programmeApplied: item.programme,
           appliedBy: `${item.studentID.first_name} ${item.studentID.last_name}`,
           applicationDate: item.appliedDate,
-          status: (item.status === true ?
-            <Tag color="green">Pass</Tag> :
-            <Tag color="red">Fail</Tag>)
-
+          status: item.status ? "Pass" : "Fail",
         })
       })
     }
@@ -104,7 +101,7 @@ function ProcessApplication() {
             onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
             icon={<SearchOutlined />}
             size="small"
-            style={{ width: 90 }}
+            className="filter-button"
           >
             Search
           </Button>
@@ -112,7 +109,7 @@ function ProcessApplication() {
           <Button
             onClick={() => handleReset(clearFilters, confirm)}
             size="small"
-            style={{ width: 90 }}
+            className="filter-button"
           >
             Reset
           </Button>
@@ -250,14 +247,19 @@ function ProcessApplication() {
       filters: [
         {
           text: 'Pass',
-          value: true,
+          value: 'Pass'
         },
         {
           text: 'Fail',
-          value: false,
+          value:  'Fail'
         },
       ],
       onFilter: (value, record) => record.status.indexOf(value) === 0,
+      render: (text) => (
+        <Tag key={text} color={text === "Pass" ? "green" : "red"}>
+          {text}
+        </Tag>
+      ),
       width: '5%',
     },
     {
