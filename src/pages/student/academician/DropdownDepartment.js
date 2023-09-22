@@ -30,7 +30,7 @@ const DropdownDepartment = ({ onDepartmentChange }) => {
 
   return (
     <Select
-      style={{ width: "18em"}}
+      style={{ width: "100%"}}
       placeholder="Select a department"
       onChange={handleDepartmentChange}
       value={selectedDepartment}

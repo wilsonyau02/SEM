@@ -121,7 +121,7 @@ const DegreeDetails = ({ course }) => {
                         style={{ marginLeft: '68px' }}
                     >
                         <Image
-                            width={500}
+                            width={"100%"}
                             src={course.academicProg}
                         />
                     </div>
@@ -152,7 +152,7 @@ const DegreeDetails = ({ course }) => {
                         style={{ marginLeft: '68px' }}
                     >
                         <Image
-                            width={600}
+                            width={"100%"}
                             src={course.degreeEntry}
                         />
                     </div>

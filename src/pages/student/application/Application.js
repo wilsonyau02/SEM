@@ -126,6 +126,7 @@ function Application() {
         dataSource={applicationData}
         loading={loading}
         style={{ padding: '0px 5em' }}
+        scroll={{ x: 1000 }}
       />
 
     </>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AutoComplete } from 'antd';
 import { AiOutlineSearch } from 'react-icons'
 
-const SearchbarProgram = ({ onProgramChange }) => {
+const SearchbarProgram = ({ onProgramChange, style }) => {
 
   const options = [
     { value: 'Doctor of Philosophy (Computer Science)', index: 0 },
@@ -56,7 +56,7 @@ const SearchbarProgram = ({ onProgramChange }) => {
   return (
     <AutoComplete
       style={{
-        width: "18em",
+        width: 200, ...style
       }}
       options={options.map(option => ({ value: option.value }))}
       onSelect={onSelect}

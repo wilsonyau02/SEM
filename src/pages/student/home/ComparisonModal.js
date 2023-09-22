@@ -34,12 +34,14 @@ const ComparisonModal = ({ isVisible, onClose, selectedCourses, setselectedCours
     );
 
     const title = (
-        <span style={{ display: 'flex', alignItems: 'center' }}>
-            Select courses for comparison
-            <Tooltip title="You can select at most 3 program courses to compare.">
-                <AiOutlineQuestionCircle style={{ marginLeft: '10px' }} />
-            </Tooltip>
-        </span>
+        <>
+            <span style={{ display: 'flex', alignItems: 'center' }}>
+                Select courses for comparison
+                <Tooltip title="You can select at most 3 program courses to compare.">
+                    <AiOutlineQuestionCircle style={{ marginLeft: '10px' }} />
+                </Tooltip>
+            </span>
+        </>
     );
 
 

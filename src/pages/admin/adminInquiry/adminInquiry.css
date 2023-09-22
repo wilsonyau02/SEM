@@ -20,4 +20,8 @@
       grid-template-columns: 1fr;
     }
   }
+
+  .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    z-index: 0 !important;
+  }
   

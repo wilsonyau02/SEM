@@ -122,13 +122,6 @@ const CompareResultsModal = ({ isVisible, onClose, selectedCourses }) => {
         }, {});
     }
 
-
-
-
-
-
-
-
     return (
         <Modal
             width="90%"

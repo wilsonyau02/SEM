@@ -75,7 +75,7 @@ function AdminLayout() {
                     left: '0',
                     height: '100%',
                     overflowY: 'auto',
-                    zIndex: '100',
+                    // zIndex: '100',
                 }}>
                 <Menu
                     // theme="light"

@@ -17,7 +17,7 @@ const SearchbarStaff = ({ onSearchTextChange }) => {
     <AutoComplete
       popupMatchSelectWidth={200}
       style={{
-        width: "18em",
+        width: "100%",
       }}
       value={options}
       onSelect={onSelect}

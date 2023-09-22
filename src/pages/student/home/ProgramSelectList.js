@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 
-const ProgramSelectList = ({ onProgramChange }) => {
+const ProgramSelectList = ({ onProgramChange, style }) => {
 
     const { Option } = Select;
 
@@ -11,8 +11,8 @@ const ProgramSelectList = ({ onProgramChange }) => {
     return ( 
         <Select
             placeholder="Select a program"
-            style={{ width: 200 }}
-            onChange={handleClick}  // Use the passed function here
+            style={{ width: 200, ...style }}
+            onChange={handleClick} 
         >
             <Option value="Doctor of Philosophy">Doctor of Philosophy</Option>
             <Option value="Master Degree">Master Degree</Option>

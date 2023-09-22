@@ -9,6 +9,7 @@ import ProgramSelectList from './ProgramSelectList';
 import SearchbarProgram from './SearchbarProgram';
 import ComparisonModal from './ComparisonModal';
 import CompareResultsModal from './CompareResultsModal';
+import { useMediaQuery } from 'react-responsive';
 
 const antIcon = (
     <LoadingOutlined
@@ -29,6 +30,9 @@ const Home = () => {
     const [isResultsModalVisible, setIsResultsModalVisible] = useState(false);
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const isTabletOrDesktop = useMediaQuery({ minWidth: 768 });
+
 
     const handleProgramSelect = async (program, index) => {
         setProgramName(program);
@@ -59,54 +63,110 @@ const Home = () => {
         <div>
             {isLoading ? (
                 // Display a loading spinner or any other loading UI
-                <div>
-
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                    <Spin indicator={antIcon} />
                 </div>
 
             ) : selectedProgramCourses ? (
-                <div style={{ display: 'flex', width: '100%' }}>
-                    <div style={{ width: '75%', marginLeft: '50px' }}>
-                        <div
-                            style={{
-                                marginTop: '20px',
-                                marginBottom: '30px',
-                                marginRight: '50px',
+
+                isTabletOrDesktop ? (
+                    <div style={{ display: 'flex', width: '100%' }}>
+                        <div style={{ width: '75%', marginLeft: '50px' }}>
+                            <div
+                                style={{
+                                    marginTop: '20px',
+                                    marginBottom: '30px',
+                                    marginRight: '50px',
+                                }}>
+                                <ProgramSelectList onProgramChange={handleProgramSelect} style={{ marginRight: '50px' }} />
+                                <SearchbarProgram onProgramChange={handleProgramSelect} />
+                            </div>
+                            <ProgramDetails courses={selectedProgramCourses} programName={programName} programIndex={programIndex} />
+                            <ComparisonModal
+                                isVisible={compareModalVisible}
+                                onClose={() => setCompareModalVisible(false)}
+                                selectedCourses={selectedCourses}
+                                setselectedCourses={setselectedCourses}
+                                programmeData={programmeData}
+                                onCompare={handleCompare}
+                            />
+                            <CompareResultsModal
+                                isVisible={isResultsModalVisible}
+                                onClose={() => setIsResultsModalVisible(false)}
+                                selectedCourses={selectedCourses}
+                                programmeData={programmeData}
+                            />
+                        </div>
+                        <div style={{ width: '100%', maxWidth: '25rem', textAlign: 'center', marginTop: '5em', marginRight: '2em' }}>
+                            <div style={{
+                                width: '100%',
+                                maxWidth: '70%',
+                                minWidth: '150px',
+                                padding: '25px',
+                                // margin: '0 auto',
                                 display: 'flex',
-                                // Make the items seperate
-                                justifyContent: 'space-between',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
+                                borderRadius: '5px',
                             }}>
-                            <ProgramSelectList onProgramChange={handleProgramSelect} />
-                            <SearchbarProgram onProgramChange={handleProgramSelect} />
-                        </div>
-                        <ProgramDetails courses={selectedProgramCourses} programName={programName} programIndex={programIndex} />
-                        <ComparisonModal
-                            isVisible={compareModalVisible}
-                            onClose={() => setCompareModalVisible(false)}
-                            selectedCourses={selectedCourses}
-                            setselectedCourses={setselectedCourses}
-                            programmeData={programmeData}
-                            onCompare={handleCompare}
-                        />
-                        <CompareResultsModal
-                            isVisible={isResultsModalVisible}
-                            onClose={() => setIsResultsModalVisible(false)}
-                            selectedCourses={selectedCourses}
-                            programmeData={programmeData}
-                        />
-                    </div>
-                    <div style={{ width: '100%', maxWidth: '25rem', margin: '10% auto', textAlign: 'center' }}>
-                        <div style={{ width: '100%', maxWidth: '70%', padding: '25px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px', borderRadius: '5px' }}>
-                            <h1 style={{ fontWeight: 'bold', textAlign: 'justify' }}>Compare your selected programs to find the best fit for you.</h1>
-                            <Button type='primary' onClick={() => setCompareModalVisible(true)} style={{ marginTop: '50px' }}>Compare Now</Button>
+                                <h1 style={{ fontWeight: 'bold', textAlign: 'justify' }}>Compare your selected programs to find the best fit for you.</h1>
+                                <Button
+                                    type='primary'
+                                    onClick={() => setCompareModalVisible(true)}
+                                    style={{
+                                        marginTop: '30px',
+                                        width: '100%', // Ensure button takes up 100% width on small screens
+                                        whiteSpace: 'normal', // Allow text to wrap
+                                        wordWrap: 'break-word', // Break text onto a new line if it overflows
+                                        overflowWrap: 'break-word',
+                                        height: 'auto', // Ensure button height is not fixed
+                                    }}
+                                >
+                                    Compare Now
+                                </Button>
+                            </div>
                         </div>
                     </div>
-
-
-                </div>
+                ) : (
+                    <div style={{ display: 'flex', width: '100%' }}>
+                        <div style={{ width: '75%', marginLeft: '50px' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <ProgramSelectList onProgramChange={handleProgramSelect} style={{ marginTop: '20px', width: 350 }} />
+                                <SearchbarProgram onProgramChange={handleProgramSelect} style={{ marginTop: '20px', width: 350 }} />
+                                <Button
+                                    type='primary'
+                                    onClick={() => setCompareModalVisible(true)}
+                                    style={{
+                                        width: 350,
+                                        marginTop: '20px',
+                                    }}
+                                >
+                                    Compare Now
+                                </Button>
+                            </div>
+                            <ProgramDetails courses={selectedProgramCourses} programName={programName} programIndex={programIndex} />
+                            <ComparisonModal
+                                isVisible={compareModalVisible}
+                                onClose={() => setCompareModalVisible(false)}
+                                selectedCourses={selectedCourses}
+                                setselectedCourses={setselectedCourses}
+                                programmeData={programmeData}
+                                onCompare={handleCompare}
+                            />
+                            <CompareResultsModal
+                                isVisible={isResultsModalVisible}
+                                onClose={() => setIsResultsModalVisible(false)}
+                                selectedCourses={selectedCourses}
+                                programmeData={programmeData}
+                            />
+                        </div>
+                    </div>
+                )
             ) : <ProgramSelector onProgramSelect={handleProgramSelect} />}
 
 
-        </div>
+        </div >
     );
 }
 

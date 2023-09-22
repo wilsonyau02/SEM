@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { fetchProgramData } from '../../../supabase-client';
 import background1 from '../../../images/ProgBackground.jpg';
 import background2 from '../../../images/ProgBackground2.jpeg';
+import './programme.css';
 
 const ProgramSelector = ({ onProgramSelect }) => {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    
 
     const handleProgramCardClick = (program) => {
         setIsLoading(true);
@@ -25,19 +27,6 @@ const ProgramSelector = ({ onProgramSelect }) => {
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%', // Use the full viewport width
-    };
-
-    const containerStyle = {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundImage: `url(${background1}), url(${background2})`,
-        backgroundSize: '50% 100%, 50% 100%', // Each image takes up 50% of the width and 100% of the height
-        backgroundPosition: 'left center, right center',
-        backgroundRepeat: 'no-repeat, no-repeat', // Ensure the images don't repeat
-        height: '350px',
-        width: '80%',
-        margin: '20px 0'
     };
 
     const cardContainerStyle = {
@@ -85,7 +74,7 @@ const ProgramSelector = ({ onProgramSelect }) => {
                 </p>
             </div>
             <div style={parentContainerStyle}>
-                <div style={containerStyle}></div>
+                <div className="responsive-container"></div>
             </div>
             <div style={cardContainerStyle}>
                 <ProgramCard title="Doctor of Philosophy" description="Learn about our PhD programs" onClick={() => showCourses("Doctor of Philosophy")} />

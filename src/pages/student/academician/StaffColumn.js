@@ -106,7 +106,7 @@ const StaffColumnGrid = () => {
     <>
       <div style={{ padding: '20px' }}>
         <div style={bar} className='bar'>
-          <Row style={search}>
+          <Row style={search} gutter={[20, 24]}>
             <Col {...filterResponsive} style={{ paddingBottom: "2%" }}>
               <DropdownStaff
                 selectedValue={selectedDropdownValue}

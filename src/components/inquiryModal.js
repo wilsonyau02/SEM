@@ -15,7 +15,7 @@ const InquiryModal = ({ isOpen, onClose, onSubmit, title, placeholder }) => {
 
   return (
     <div
-      className={`fixed inset-0 flex items-center justify-center z-50 ${
+      className={`fixed inset-0 flex items-center justify-center z-1000 ${
         isOpen ? "" : "hidden"
       }`}
     >

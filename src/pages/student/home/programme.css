@@ -6,3 +6,36 @@
     /* display: flex;           Add flex display */
     /* align-items: center;     Vertically center the text with the arrow */
 }
+
+.responsive-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('../../../images/ProgBackground.jpg'), url('../../../images/ProgBackground2.jpeg');
+    background-size: 50% 100%, 50% 100%; /* Each image takes up 50% of the width and 100% of the height */
+    background-position: left center, right center;
+    background-repeat: no-repeat, no-repeat; /* Ensure the images don't repeat */
+    height: 350px;
+    width: 80%;
+    margin: 20px 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+}
+
+/* Media query for screens smaller than or equal to 768px */
+@media (max-width: 768px) {
+    .responsive-container {
+        background-size: 100% 50%, 100% 50%; /* Split into two rows */
+        background-position: left top, left bottom, right top, right bottom; /* Set positions for both rows */
+        height: 700px;
+    
+    }
+}
+
+@media (max-width: 568px) {
+    .responsive-container {
+        background-size: 100% 50%, 100% 50%; /* Split into two rows */
+        background-position: left top, left bottom, right top, right bottom; /* Set positions for both rows */
+        height: 500px;
+    }
+}

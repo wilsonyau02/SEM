@@ -219,6 +219,7 @@ function ActivityLog() {
         dataSource={data} 
         bordered 
         pagination={{ pageSize: 10 }}
+        scroll={{ x: 1500 }}
         tableLayout="fixed"
         loading={loading} />
     </div>
