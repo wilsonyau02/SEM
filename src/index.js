@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import AuthProvider from './context/AuthProvider';
 // import '../src/pages/authentication/auth.css'
 import './index.css';
@@ -9,11 +9,11 @@ import './index.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <Router>
       <AuthProvider>
         <App />
       </AuthProvider>
-    </BrowserRouter>
+    </Router>
   </React.StrictMode>
 );
 
