@@ -93,7 +93,7 @@ const StudentInquiry = () => {
         <Radio.Group onChange={handleStatusChange} value={statusFilter}>
           <Radio.Button value="all">All</Radio.Button>
           <Radio.Button value="pending">In Progress</Radio.Button>
-          <Radio.Button value="completed">Completed</Radio.Button>
+          <Radio.Button value="answered">Completed</Radio.Button>
         </Radio.Group>
       </div>
 
