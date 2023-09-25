@@ -154,10 +154,17 @@ export async function storeIPAddress(event, userType) {
 
 // Function to post an inquiry to Supabase (inquiry)
 export async function postInquiry(inquiry, userSession) {
+
+  const currentDateTime = getCurrentDateTime();
+
   try {
     const { data, error } = await supabase
       .from("inquiry")
-      .insert([{ content: inquiry, author: userSession }])
+      .insert([{ 
+          content: inquiry, 
+          author: userSession,
+          created_at: currentDateTime,
+        }])
       .select();
 
     if (error) {
