@@ -1,7 +1,7 @@
-#TARUMT 202305 BACS3003 Software Evolution and Maintenance Assignment
-##This is assignment project which aims to reengineer previous TARUMT FOCS website based on the new requirements above.
+# TARUMT 202305 BACS3003 Software Evolution and Maintenance Assignment
+## This is assignment project which aims to reengineer previous TARUMT FOCS website based on the new requirements above.
 
-###New Requirements:
+### New Requirements:
 1. The website should be able to show the page regarding the information of an intended computing programme as a search result.
 2. The website should be able to automatically assess the qualification of a potential candidate for his/her intended diploma or degree programme (limited to computing programme) with input from the user.
 3. The website should be able to automatically assess the qualification of a potential candidate and approve/reject the application of enrolment.
@@ -21,7 +21,7 @@
   - https://sem-p79m.vercel.app/
   - https://sem-p79m-wilsonyau02.vercel.app/
 
-##User Manual
+## User Manual
 ### Before running the code, please install the packages
 1. open console
 2. type `npm install` or `npm i` to install all the packages in the project.
