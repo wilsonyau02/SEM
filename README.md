@@ -23,9 +23,7 @@ This assignment project aims to reengineer the previous TARUMT FOCS website, inc
 
 ## 🌍 Live URLs:
 
-- [URL 1](https://sem-p79m-git-main-wilsonyau02.vercel.app/)
-- [URL 2](https://sem-p79m.vercel.app/)
-- [URL 3](https://sem-p79m-wilsonyau02.vercel.app/)
+- [URL 1](https://sem-p79m-wilsonyau02.vercel.app/)
 
 ## 📖 User Manual:
 
