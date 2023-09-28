@@ -12,7 +12,7 @@ const signOut = () => supabase.auth.signOut();
 
 const passwordReset = (email) =>
   supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: "http://localhost:3000/update-password"
+    redirectTo: "https://sem-p79m-wilsonyau02.vercel.app/update-password"
   });
 
 const updatePassword = (updatedPassword) =>
