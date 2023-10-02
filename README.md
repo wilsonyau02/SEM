@@ -48,7 +48,8 @@ This assignment project aims to reengineer the previous TARUMT FOCS website, inc
 
 ## 🚀 Team Members:
 
-1. [Lee Chun Kai](https://github.com/BananaKing123)
-2. [Lan Ke En](https://github.com/error323dino)
-3. [Tay Chai Boon](https://github.com/Caiwen612)
-4. [Eugene Law Kai Le](https://github.com/EugeneLKL)
+1. [Wilson Yau Kai Chun](https://github.com/wilsonyau02)
+2. [Lee Chun Kai](https://github.com/BananaKing123)
+3. [Lan Ke En](https://github.com/error323dino)
+4. [Tay Chai Boon](https://github.com/Caiwen612)
+5. [Eugene Law Kai Le](https://github.com/EugeneLKL)
